@@ -27,12 +27,52 @@ interface ItineraryDay {
   icon: typeof Landmark;
 }
 
+interface LocationInfo {
+  vibe: string;
+  knownFor: string;
+  mustDo: string;
+}
+
 interface LocationGroup {
   location: string;
   dateRange: string;
   days: ItineraryDay[];
   icon: typeof Landmark;
+  info: LocationInfo;
 }
+
+const locationInfoMap: Record<string, LocationInfo> = {
+  "Rome": {
+    vibe: "Ancient grandeur meets vibrant nightlife",
+    knownFor: "Colosseum, Vatican, pasta alla carbonara",
+    mustDo: "Toss a coin in the Trevi Fountain at sunrise"
+  },
+  "Amalfi Coast": {
+    vibe: "Dramatic cliffs, la dolce vita glamour",
+    knownFor: "Positano views, limoncello, Path of the Gods",
+    mustDo: "Sunset aperitivo overlooking the Mediterranean"
+  },
+  "Tuscany": {
+    vibe: "Rolling hills, unhurried village life",
+    knownFor: "Chianti wine, truffle hunting, Renaissance art",
+    mustDo: "Wine tasting at a family vineyard"
+  },
+  "Cinque Terre": {
+    vibe: "Colorful fishing villages, coastal romance",
+    knownFor: "Five UNESCO villages, fresh pesto, hiking trails",
+    mustDo: "Watch sunset from Manarola with local wine"
+  },
+  "Florence": {
+    vibe: "Renaissance elegance, art at every turn",
+    knownFor: "Michelangelo's David, Duomo, bistecca Fiorentina",
+    mustDo: "Sunset at Piazzale Michelangelo"
+  },
+  "Venice": {
+    vibe: "Floating fairytale, romantic labyrinth",
+    knownFor: "Grand Canal, gondolas, cicchetti & Prosecco",
+    mustDo: "Gondola ride through hidden canals at dusk"
+  }
+};
 
 interface PackingItem {
   id: string;
@@ -176,6 +216,30 @@ function LocationCard({ group, isExpanded, onToggle }: { group: LocationGroup; i
           <Button size="icon" variant="ghost" className="flex-shrink-0">
             {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
           </Button>
+        </div>
+
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="flex items-start gap-2">
+            <Sparkles className="w-4 h-4 text-italy-green flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">Vibe</p>
+              <p className="text-sm text-foreground">{group.info.vibe}</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-2">
+            <Heart className="w-4 h-4 text-italy-red flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">Known For</p>
+              <p className="text-sm text-foreground">{group.info.knownFor}</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-2">
+            <Camera className="w-4 h-4 text-italy-green flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">Must-Do</p>
+              <p className="text-sm text-foreground">{group.info.mustDo}</p>
+            </div>
+          </div>
         </div>
         
         {isExpanded && (
@@ -563,7 +627,12 @@ function groupItineraryByLocation(days: ItineraryDay[]): LocationGroup[] {
         location: day.location,
         dateRange: day.date,
         days: [day],
-        icon: day.icon
+        icon: day.icon,
+        info: locationInfoMap[day.location] || {
+          vibe: "",
+          knownFor: "",
+          mustDo: ""
+        }
       };
     } else {
       currentGroup.days.push(day);
