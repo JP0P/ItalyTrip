@@ -106,7 +106,7 @@
 ## Special Features
 
 **Countdown Logic**:
-- Real-time JavaScript countdown to May 12, 2025
+- Real-time JavaScript countdown to May 12, 2026
 - Update every second
 - Show celebratory message when date arrives ("Buon Viaggio!")
 

@@ -81,6 +81,11 @@ export default {
           busy: "rgb(239 68 68)",
           offline: "rgb(156 163 175)",
         },
+        italy: {
+          green: "rgb(var(--italy-green) / <alpha-value>)",
+          white: "rgb(var(--italy-white) / <alpha-value>)",
+          red: "rgb(var(--italy-red) / <alpha-value>)",
+        },
       },
       fontFamily: {
         sans: ["var(--font-sans)"],
