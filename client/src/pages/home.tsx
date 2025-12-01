@@ -358,10 +358,9 @@ function MusicToggle({
   return (
     <div className="relative">
       <Button
-        size="icon"
         variant="ghost"
         onClick={onToggle}
-        className="glass-effect text-white border-white/20"
+        className="glass-effect text-white border-white/20 h-11 w-11 p-0"
         data-testid="button-music-toggle"
         aria-label={isPlaying ? "Pause music" : "Play music"}
       >
@@ -445,10 +444,9 @@ function ShareButton({ daysLeft, targetDate }: { daysLeft: number; targetDate: s
 
   return (
     <Button
-      size="icon"
       variant="ghost"
       onClick={handleShare}
-      className={`glass-effect text-white border-white/20 ${error ? 'border-red-500/50' : ''}`}
+      className={`glass-effect text-white border-white/20 h-11 w-11 p-0 ${error ? 'border-red-500/50' : ''}`}
       data-testid="button-share"
       aria-label={copied ? "Link copied!" : error ? "Copy failed" : "Share countdown"}
     >
@@ -930,22 +928,13 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60" />
         </div>
 
-        {/* Top Controls */}
-        <div className="absolute top-6 right-6 z-20 flex items-center gap-2">
-          <MusicToggle 
-            isPlaying={isPlaying} 
-            onToggle={toggleMusic} 
-            songUrl={currentSong}
-            showSongName={showSongName}
-            onHideSongName={hideSongName}
-          />
-          <ShareButton daysLeft={timeLeft.days} targetDate={targetDateString} />
+        {/* Top Controls - stacked vertically: checklist, share, sound */}
+        <div className="absolute top-6 right-6 z-20 flex flex-col items-center gap-2">
           <Sheet>
             <SheetTrigger asChild>
               <Button
-                size="icon"
                 variant="ghost"
-                className="glass-effect text-white border-white/20"
+                className="glass-effect text-white border-white/20 h-11 w-11 p-0"
                 data-testid="button-packing-list"
                 aria-label="Open packing list"
               >
@@ -967,6 +956,14 @@ export default function Home() {
               </div>
             </SheetContent>
           </Sheet>
+          <ShareButton daysLeft={timeLeft.days} targetDate={targetDateString} />
+          <MusicToggle 
+            isPlaying={isPlaying} 
+            onToggle={toggleMusic} 
+            songUrl={currentSong}
+            showSongName={showSongName}
+            onHideSongName={hideSongName}
+          />
         </div>
 
         {/* Floating Icons */}
