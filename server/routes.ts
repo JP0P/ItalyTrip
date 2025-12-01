@@ -13,6 +13,7 @@ export async function registerRoutes(
       const messages = await storage.getChatMessages();
       res.json(messages);
     } catch (error) {
+      console.error("Error fetching messages:", error);
       res.status(500).json({ error: "Failed to fetch messages" });
     }
   });

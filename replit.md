@@ -70,9 +70,10 @@ Preferred communication style: Simple, everyday language.
 
 **Storage Abstraction**
 - `IStorage` interface defining CRUD operations
-- In-memory storage implementation (`MemStorage`) for development/testing
+- PostgreSQL database storage implementation (`DatabaseStorage`) using Drizzle ORM
+- Neon HTTP driver for database connections (avoids WebSocket issues)
 - Storage interface supports user management (create, get by ID, get by username)
-- Chat message storage with create and list operations
+- Chat message storage with create and list operations - **persists across deployments**
 
 ### Chat Feature
 

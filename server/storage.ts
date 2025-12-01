@@ -1,5 +1,6 @@
-import { type User, type InsertUser, type ChatMessage, type InsertChatMessage } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { type User, type InsertUser, type ChatMessage, type InsertChatMessage, users, chatMessages } from "@shared/schema";
+import { db } from "./db";
+import { eq, asc } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -9,48 +10,30 @@ export interface IStorage {
   createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private chatMessages: ChatMessage[];
-
-  constructor() {
-    this.users = new Map();
-    this.chatMessages = [];
-  }
-
+export class DatabaseStorage implements IStorage {
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db.insert(users).values(insertUser).returning();
     return user;
   }
 
   async getChatMessages(): Promise<ChatMessage[]> {
-    return [...this.chatMessages].sort((a, b) => 
-      new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-    );
+    return db.select().from(chatMessages).orderBy(asc(chatMessages.createdAt));
   }
 
   async createChatMessage(insertMessage: InsertChatMessage): Promise<ChatMessage> {
-    const id = randomUUID();
-    const chatMessage: ChatMessage = {
-      ...insertMessage,
-      id,
-      createdAt: new Date(),
-    };
-    this.chatMessages.push(chatMessage);
-    return chatMessage;
+    const [message] = await db.insert(chatMessages).values(insertMessage).returning();
+    return message;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
