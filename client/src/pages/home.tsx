@@ -6,7 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { 
   Plane, MapPin, Coffee, UtensilsCrossed, Camera, Wine, Sun, Heart, Sparkles,
   ChevronDown, ChevronUp, CheckSquare, Volume2, VolumeX, Share2, Copy, Check,
-  Building, Landmark, Ship, Mountain, Church
+  Building, Landmark, Ship, Mountain, Church, Music
 } from "lucide-react";
 import heroImage from "@assets/generated_images/amalfi_coast_sunset_view.png";
 
@@ -320,18 +320,68 @@ function PackingChecklist({ categories, onToggleItem }: { categories: PackingCat
   );
 }
 
-function MusicToggle({ isPlaying, onToggle }: { isPlaying: boolean; onToggle: () => void }) {
+function extractSongName(url: string): string {
+  try {
+    const filename = decodeURIComponent(url.split('/').pop() || '');
+    const nameWithoutExt = filename.replace(/\.mp3$/i, '');
+    const cleanName = nameWithoutExt.replace(/^\d+\s*/, '');
+    return cleanName || 'Italian Music';
+  } catch {
+    return 'Italian Music';
+  }
+}
+
+function MusicToggle({ 
+  isPlaying, 
+  onToggle, 
+  songUrl,
+  showSongName,
+  onHideSongName
+}: { 
+  isPlaying: boolean; 
+  onToggle: () => void;
+  songUrl: string;
+  showSongName: boolean;
+  onHideSongName: () => void;
+}) {
+  const songName = extractSongName(songUrl);
+
+  useEffect(() => {
+    if (showSongName) {
+      const timer = setTimeout(() => {
+        onHideSongName();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showSongName, onHideSongName]);
+
   return (
-    <Button
-      size="icon"
-      variant="ghost"
-      onClick={onToggle}
-      className="glass-effect text-white border-white/20"
-      data-testid="button-music-toggle"
-      aria-label={isPlaying ? "Pause music" : "Play music"}
-    >
-      {isPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-    </Button>
+    <div className="relative">
+      <Button
+        size="icon"
+        variant="ghost"
+        onClick={onToggle}
+        className="glass-effect text-white border-white/20"
+        data-testid="button-music-toggle"
+        aria-label={isPlaying ? "Pause music" : "Play music"}
+      >
+        {isPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+      </Button>
+      
+      <div 
+        className={`absolute top-full right-0 mt-2 px-3 py-2 rounded-lg glass-effect border border-white/20 whitespace-nowrap transition-all duration-300 ${
+          showSongName 
+            ? 'opacity-100 translate-y-0 pointer-events-auto' 
+            : 'opacity-0 -translate-y-2 pointer-events-none'
+        }`}
+        data-testid="song-name-dropdown"
+      >
+        <div className="flex items-center gap-2 text-white text-sm">
+          <Music className="w-3.5 h-3.5 text-white/70" />
+          <span className="font-medium">{songName}</span>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -741,6 +791,7 @@ export default function Home() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [expandedLocations, setExpandedLocations] = useState<string[]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [showSongName, setShowSongName] = useState(false);
   const [packingCategories, setPackingCategories] = useState<PackingCategory[]>(() => {
     const saved = localStorage.getItem('italy-packing-list');
     return saved ? JSON.parse(saved) : defaultPackingCategories;
@@ -797,7 +848,9 @@ export default function Home() {
     audioRef.current.loop = true;
     audioRef.current.volume = 0.3;
     
-    audioRef.current.play().catch(() => {
+    audioRef.current.play().then(() => {
+      setShowSongName(true);
+    }).catch(() => {
       setIsPlaying(false);
     });
     
@@ -817,8 +870,10 @@ export default function Home() {
     }
 
     if (audioRef.current.paused) {
+      setShowSongName(true);
       audioRef.current.play().catch(() => {
         console.log('Audio playback requires user interaction');
+        setShowSongName(false);
       });
       setIsPlaying(true);
     } else {
@@ -826,6 +881,10 @@ export default function Home() {
       setIsPlaying(false);
     }
   };
+
+  const hideSongName = useCallback(() => {
+    setShowSongName(false);
+  }, []);
 
   const isCountdownComplete = timeLeft.total <= 0;
 
@@ -873,7 +932,13 @@ export default function Home() {
 
         {/* Top Controls */}
         <div className="absolute top-6 right-6 z-20 flex items-center gap-2">
-          <MusicToggle isPlaying={isPlaying} onToggle={toggleMusic} />
+          <MusicToggle 
+            isPlaying={isPlaying} 
+            onToggle={toggleMusic} 
+            songUrl={currentSong}
+            showSongName={showSongName}
+            onHideSongName={hideSongName}
+          />
           <ShareButton daysLeft={timeLeft.days} targetDate={targetDateString} />
           <Sheet>
             <SheetTrigger asChild>
