@@ -115,7 +115,7 @@ export function ChatBox() {
       <div className="fixed bottom-4 right-4 z-50">
         <button
           onClick={() => setIsExpanded(true)}
-          className="h-16 w-16 rounded-full shadow-lg bg-white hover:scale-105 transition-transform duration-200 flex items-center justify-center p-1 border border-border"
+          className="h-16 w-16 hover:scale-110 transition-transform duration-200 flex items-center justify-center bg-transparent border-none cursor-pointer drop-shadow-lg"
           data-testid="button-open-chat"
         >
           <img src={gelatoIcon} alt="Open chat" className="h-full w-full object-contain" />
