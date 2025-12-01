@@ -739,7 +739,7 @@ export default function Home() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
   const [prevTimeLeft, setPrevTimeLeft] = useState<TimeLeft>(timeLeft);
   const [showConfetti, setShowConfetti] = useState(false);
-  const [expandedLocations, setExpandedLocations] = useState<string[]>([locationGroups[0]?.location || '']);
+  const [expandedLocations, setExpandedLocations] = useState<string[]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
   const [packingCategories, setPackingCategories] = useState<PackingCategory[]>(() => {
     const saved = localStorage.getItem('italy-packing-list');
