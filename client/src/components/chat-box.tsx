@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { X, Send, User } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { ChatMessage } from "@shared/schema";
-import gelatoIcon from "@assets/generated_images/italian_flag_gelato_transparent.png";
+import gelatoIcon from "@assets/14E66A51-6306-4DBD-B316-9765CD873462_1764565746408.png";
 
 function formatTime(date: Date | string) {
   const d = new Date(date);
