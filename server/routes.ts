@@ -1,16 +1,34 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { insertChatMessageSchema } from "@shared/schema";
+import { fromZodError } from "zod-validation-error";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  // put application routes here
-  // prefix all routes with /api
+  app.get("/api/chat/messages", async (_req, res) => {
+    try {
+      const messages = await storage.getChatMessages();
+      res.json(messages);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch messages" });
+    }
+  });
 
-  // use storage to perform CRUD operations on the storage interface
-  // e.g. storage.insertUser(user) or storage.getUserByUsername(username)
+  app.post("/api/chat/messages", async (req, res) => {
+    try {
+      const result = insertChatMessageSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ error: fromZodError(result.error).message });
+      }
+      const message = await storage.createChatMessage(result.data);
+      res.status(201).json(message);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create message" });
+    }
+  });
 
   return httpServer;
 }
