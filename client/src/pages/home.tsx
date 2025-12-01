@@ -689,6 +689,21 @@ const defaultPackingCategories: PackingCategory[] = [
   }
 ];
 
+const traditionalItalianSongs = [
+  'https://archive.org/download/lp_italian-folk-songs_various/disc1/01.01.%20Calabria%20%28Tarantella%20Calabrese%29%20And%20Sardegna.mp3',
+  'https://archive.org/download/lp_italian-folk-songs_various/disc1/01.02.%20Sicilia%20And%20Campania.mp3',
+  'https://archive.org/download/lp_italian-folk-songs_various/disc1/01.03.%20Puglie%20And%20Molise.mp3',
+  'https://archive.org/download/lp_italian-folk-songs_various/disc1/01.04.%20Lazio%20And%20Toscana.mp3',
+  'https://archive.org/download/lp_italian-folk-songs_various/disc1/01.05.%20Emilia%20And%20Friuli.mp3',
+  'https://archive.org/download/lp_melodie-ditaly_the-di-mara-sisters/disc1/01.01.%20Funiculi%20Funicula.mp3',
+  'https://archive.org/download/lp_melodie-ditaly_the-di-mara-sisters/disc1/01.02.%20Santa%20Lucia.mp3',
+  'https://archive.org/download/lp_melodie-ditaly_the-di-mara-sisters/disc1/01.03.%20O%20Sole%20Mio.mp3',
+];
+
+function getRandomSong(): string {
+  return traditionalItalianSongs[Math.floor(Math.random() * traditionalItalianSongs.length)];
+}
+
 function getTargetDateFromUrl(): Date {
   const urlParams = new URLSearchParams(window.location.search);
   const dateParam = urlParams.get('date');
@@ -705,6 +720,7 @@ export default function Home() {
   const [targetDate] = useState<Date>(() => getTargetDateFromUrl());
   const targetDateString = targetDate.toISOString().split('T')[0];
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [currentSong] = useState<string>(() => getRandomSong());
   
   const calculateTimeLeft = useCallback((): TimeLeft => {
     const now = new Date();
@@ -727,7 +743,7 @@ export default function Home() {
   const [prevTimeLeft, setPrevTimeLeft] = useState<TimeLeft>(timeLeft);
   const [showConfetti, setShowConfetti] = useState(false);
   const [expandedLocations, setExpandedLocations] = useState<string[]>([locationGroups[0]?.location || '']);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [packingCategories, setPackingCategories] = useState<PackingCategory[]>(() => {
     const saved = localStorage.getItem('italy-packing-list');
     return saved ? JSON.parse(saved) : defaultPackingCategories;
@@ -779,9 +795,29 @@ export default function Home() {
     );
   };
 
+  useEffect(() => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio(currentSong);
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.3;
+    }
+    
+    if (isPlaying) {
+      audioRef.current.play().catch(() => {
+        setIsPlaying(false);
+      });
+    }
+    
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
+
   const toggleMusic = () => {
     if (!audioRef.current) {
-      audioRef.current = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+      audioRef.current = new Audio(currentSong);
       audioRef.current.loop = true;
       audioRef.current.volume = 0.3;
     }
