@@ -115,8 +115,17 @@ export function ChatBox() {
       <div className="fixed bottom-4 right-4 z-50">
         <button
           onClick={() => setIsExpanded(true)}
-          className="appearance-none bg-none border-0 p-0 m-0 outline-none cursor-pointer hover:scale-110 transition-transform duration-200"
-          style={{ background: 'none' }}
+          className="cursor-pointer hover:scale-110 transition-transform duration-200"
+          style={{ 
+            background: 'transparent', 
+            border: 'none', 
+            padding: 0, 
+            margin: 0,
+            outline: 'none',
+            WebkitAppearance: 'none',
+            MozAppearance: 'none',
+            appearance: 'none'
+          }}
           data-testid="button-open-chat"
         >
           <img 
