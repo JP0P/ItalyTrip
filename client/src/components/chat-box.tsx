@@ -5,9 +5,10 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { MessageCircle, X, Send, User } from "lucide-react";
+import { X, Send, User } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { ChatMessage } from "@shared/schema";
+import gelatoIcon from "@assets/generated_images/kawaii_gelato_three_smiling_scoops.png";
 
 function formatTime(date: Date | string) {
   const d = new Date(date);
@@ -112,14 +113,13 @@ export function ChatBox() {
   if (!isExpanded) {
     return (
       <div className="fixed bottom-4 right-4 z-50">
-        <Button
-          size="icon"
+        <button
           onClick={() => setIsExpanded(true)}
-          className="h-14 w-14 rounded-full shadow-lg bg-italy-green hover:bg-italy-green/90"
+          className="h-16 w-16 rounded-full shadow-lg bg-white hover:scale-105 transition-transform duration-200 flex items-center justify-center p-1 border border-border"
           data-testid="button-open-chat"
         >
-          <MessageCircle className="h-6 w-6 text-white" />
-        </Button>
+          <img src={gelatoIcon} alt="Open chat" className="h-full w-full object-contain" />
+        </button>
         {messages.length > 0 && (
           <span 
             className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-italy-red text-white text-xs flex items-center justify-center font-medium"
@@ -137,7 +137,7 @@ export function ChatBox() {
       <Card className="w-80 sm:w-96 flex flex-col shadow-xl border-border">
         <div className="flex items-center justify-between gap-2 p-4 border-b border-border bg-italy-green/5">
           <div className="flex items-center gap-2">
-            <MessageCircle className="h-5 w-5 text-italy-green" />
+            <img src={gelatoIcon} alt="" className="h-6 w-6 object-contain" />
             <h3 className="font-semibold text-foreground">Trip Chat</h3>
           </div>
           <Button
@@ -158,7 +158,7 @@ export function ChatBox() {
               </div>
             ) : messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full gap-2 text-center">
-                <MessageCircle className="h-10 w-10 text-muted-foreground/50" />
+                <img src={gelatoIcon} alt="" className="h-12 w-12 object-contain opacity-50" />
                 <p className="text-muted-foreground text-sm">
                   No messages yet. Start the conversation!
                 </p>
