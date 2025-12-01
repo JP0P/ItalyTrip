@@ -58,7 +58,7 @@ function FloatingIcon({ icon: Icon, className, delay = "0s" }: { icon: typeof Pl
   );
 }
 
-function CountdownUnit({ value, label, prevValue }: { value: number; label: string; prevValue: number }) {
+function CountdownUnit({ value, label, prevValue, size = "normal" }: { value: number; label: string; prevValue: number; size?: "large" | "normal" }) {
   const [isAnimating, setIsAnimating] = useState(false);
   
   useEffect(() => {
@@ -69,19 +69,30 @@ function CountdownUnit({ value, label, prevValue }: { value: number; label: stri
     }
   }, [value, prevValue]);
 
+  const isLarge = size === "large";
+
   return (
     <div className="flex flex-col items-center" data-testid={`countdown-${label.toLowerCase()}`}>
-      <div className="glass-effect rounded-3xl p-4 sm:p-6 lg:p-8 min-w-[80px] sm:min-w-[100px] lg:min-w-[140px]">
+      <div className={`glass-effect rounded-3xl ${isLarge ? 'p-6 sm:p-8 lg:p-10 min-w-[140px] sm:min-w-[180px] lg:min-w-[240px]' : 'p-3 sm:p-4 lg:p-5 min-w-[70px] sm:min-w-[85px] lg:min-w-[100px]'}`}>
         <span 
-          className={`font-serif text-5xl sm:text-6xl lg:text-8xl font-bold text-white text-shadow-lg block text-center ${isAnimating ? 'animate-number-flip' : ''}`}
+          className={`font-serif font-bold text-white text-shadow-lg block text-center ${isAnimating ? 'animate-number-flip' : ''} ${isLarge ? 'text-7xl sm:text-8xl lg:text-9xl' : 'text-3xl sm:text-4xl lg:text-5xl'}`}
           aria-label={`${value} ${label}`}
         >
           {value.toString().padStart(2, '0')}
         </span>
       </div>
-      <span className="text-white/80 text-xs sm:text-sm uppercase tracking-widest mt-3 font-medium text-shadow">
+      <span className={`text-white/80 uppercase tracking-widest font-medium text-shadow ${isLarge ? 'text-sm sm:text-base mt-4' : 'text-xs mt-2'}`}>
         {label}
       </span>
+    </div>
+  );
+}
+
+function TimeSeparator() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-2 text-white/60 self-start mt-4">
+      <div className="w-2 h-2 rounded-full bg-white/40" />
+      <div className="w-2 h-2 rounded-full bg-white/40" />
     </div>
   );
 }
@@ -764,15 +775,22 @@ export default function Home() {
 
           {!isCountdownComplete && (
             <div 
-              className="flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-8 mt-10"
+              className="flex flex-col items-center gap-6 sm:gap-8 mt-10"
               role="timer"
               aria-live="polite"
               data-testid="countdown-timer"
             >
-              <CountdownUnit value={timeLeft.days} label="Days" prevValue={prevTimeLeft.days} />
-              <CountdownUnit value={timeLeft.hours} label="Hours" prevValue={prevTimeLeft.hours} />
-              <CountdownUnit value={timeLeft.minutes} label="Minutes" prevValue={prevTimeLeft.minutes} />
-              <CountdownUnit value={timeLeft.seconds} label="Seconds" prevValue={prevTimeLeft.seconds} />
+              {/* Days - Large & Prominent */}
+              <CountdownUnit value={timeLeft.days} label="Days" prevValue={prevTimeLeft.days} size="large" />
+              
+              {/* Hours, Minutes, Seconds Row */}
+              <div className="flex items-start justify-center gap-3 sm:gap-4">
+                <CountdownUnit value={timeLeft.hours} label="Hours" prevValue={prevTimeLeft.hours} />
+                <TimeSeparator />
+                <CountdownUnit value={timeLeft.minutes} label="Minutes" prevValue={prevTimeLeft.minutes} />
+                <TimeSeparator />
+                <CountdownUnit value={timeLeft.seconds} label="Seconds" prevValue={prevTimeLeft.seconds} />
+              </div>
             </div>
           )}
 
