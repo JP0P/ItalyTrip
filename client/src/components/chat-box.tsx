@@ -282,10 +282,17 @@ export function ChatBox() {
               </Button>
             </div>
           )}
-          {nickname && (
-            <p className="mt-2 text-xs text-muted-foreground">
-              Chatting as <span className="font-medium">{nickname}</span>
-            </p>
+          {nickname && !showNicknamePrompt && (
+            <button
+              onClick={() => {
+                setNicknameInput(nickname);
+                setShowNicknamePrompt(true);
+              }}
+              className="mt-2 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center gap-1"
+              data-testid="button-change-nickname"
+            >
+              Chatting as <span className="font-medium underline decoration-dotted underline-offset-2">{nickname}</span>
+            </button>
           )}
         </div>
       </Card>
