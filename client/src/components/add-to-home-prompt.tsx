@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { X, Heart, Share, Plus } from "lucide-react";
+import { X, Heart, Share, Plus, Smartphone } from "lucide-react";
 
 type DeviceType = "ios" | "android" | "other";
 
@@ -61,23 +60,20 @@ export function AddToHomePrompt() {
     if (deviceType === "ios") {
       return (
         <>
-          <Share className="h-3 w-3 text-italy-green inline mr-1" />
-          <span className="font-medium">Share</span> {">"} Add to Home
+          Tap <Share className="h-3 w-3 inline -mt-0.5 mx-0.5" /> then <span className="font-semibold">Add to Home</span>
         </>
       );
     }
     if (deviceType === "android") {
       return (
         <>
-          <Plus className="h-3 w-3 text-italy-green inline mr-1" />
-          <span className="font-medium">Menu</span> {">"} Add to Home
+          Tap <span className="font-semibold">Menu</span> then <span className="font-semibold">Add to Home</span>
         </>
       );
     }
     return (
       <>
-        <Plus className="h-3 w-3 text-italy-green inline mr-1" />
-        <span className="font-medium">Install</span> from browser menu
+        <span className="font-semibold">Install</span> from browser menu
       </>
     );
   };
@@ -89,38 +85,30 @@ export function AddToHomePrompt() {
       }`}
       data-testid="prompt-add-to-home"
     >
-      <div className="relative">
-        <div className="absolute -top-1 -left-1 animate-pulse">
-          <Heart className="h-4 w-4 text-italy-red fill-italy-red" />
+      <div className="flex items-center gap-2 py-2 pl-2.5 pr-1.5 bg-white dark:bg-gray-900 rounded-full shadow-lg border border-border">
+        <div className="flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-br from-italy-green to-italy-green/80">
+          <Smartphone className="h-3.5 w-3.5 text-white" />
         </div>
         
-        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-italy-green/20 overflow-hidden max-w-[200px]">
-          <div className="p-3 pb-2">
-            <Button
-              size="icon"
-              variant="ghost"
-              className="absolute top-1 right-1 h-5 w-5 rounded-full text-muted-foreground/60"
-              onClick={handleDismiss}
-              data-testid="button-dismiss-prompt"
-            >
-              <X className="h-2.5 w-2.5" />
-            </Button>
-
-            <p className="text-[11px] font-medium text-foreground pr-4 leading-tight">
-              Save me to your home screen!
-            </p>
-            
-            <p className="text-[10px] text-muted-foreground mt-1.5 leading-snug">
-              {getInstruction()}
-            </p>
+        <div className="flex flex-col gap-0 pr-1">
+          <div className="flex items-center gap-1">
+            <span className="text-[11px] font-medium text-foreground whitespace-nowrap">
+              Add to Home
+            </span>
+            <Heart className="h-2.5 w-2.5 text-italy-red fill-italy-red animate-pulse" />
           </div>
-
-          <div className="h-0.5 w-full flex">
-            <div className="flex-1 bg-italy-green" />
-            <div className="flex-1 bg-white dark:bg-gray-300" />
-            <div className="flex-1 bg-italy-red" />
-          </div>
+          <span className="text-[9px] text-muted-foreground whitespace-nowrap">
+            {getInstruction()}
+          </span>
         </div>
+
+        <button
+          onClick={handleDismiss}
+          className="flex items-center justify-center w-5 h-5 rounded-full text-muted-foreground/50 hover:text-muted-foreground hover:bg-muted/50 transition-colors"
+          data-testid="button-dismiss-prompt"
+        >
+          <X className="h-3 w-3" />
+        </button>
       </div>
     </div>
   );
