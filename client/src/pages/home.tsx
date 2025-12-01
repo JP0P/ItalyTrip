@@ -333,13 +333,15 @@ function extractSongName(url: string): string {
 
 function MusicToggle({ 
   isPlaying, 
-  onToggle, 
+  onToggle,
+  onTurnOn,
   songUrl,
   showSongName,
   onHideSongName
 }: { 
   isPlaying: boolean; 
   onToggle: () => void;
+  onTurnOn: () => void;
   songUrl: string;
   showSongName: boolean;
   onHideSongName: () => void;
@@ -355,6 +357,11 @@ function MusicToggle({
     }
   }, [showSongName, onHideSongName]);
 
+  const handleSongNameClick = () => {
+    onTurnOn();
+    onHideSongName();
+  };
+
   return (
     <div className="relative">
       <Button
@@ -367,19 +374,21 @@ function MusicToggle({
         {isPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
       </Button>
       
-      <div 
-        className={`absolute top-full right-0 mt-2 px-3 py-2 rounded-lg glass-effect border border-white/20 whitespace-nowrap transition-all duration-300 ${
+      <button 
+        onClick={handleSongNameClick}
+        className={`absolute top-full right-0 mt-2 px-3 py-2 rounded-lg glass-effect border border-white/20 whitespace-nowrap transition-all duration-300 cursor-pointer hover:bg-white/10 ${
           showSongName 
             ? 'opacity-100 translate-y-0 pointer-events-auto' 
             : 'opacity-0 -translate-y-2 pointer-events-none'
         }`}
         data-testid="song-name-dropdown"
+        aria-label={`Play ${songName}`}
       >
         <div className="flex items-center gap-2 text-white text-sm">
           <Music className="w-3.5 h-3.5 text-white/70" />
           <span className="font-medium">{songName}</span>
         </div>
-      </div>
+      </button>
     </div>
   );
 }
@@ -880,6 +889,21 @@ export default function Home() {
     }
   };
 
+  const turnMusicOn = () => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio(currentSong);
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.3;
+    }
+
+    if (audioRef.current.paused) {
+      audioRef.current.play().catch(() => {
+        console.log('Audio playback requires user interaction');
+      });
+      setIsPlaying(true);
+    }
+  };
+
   const hideSongName = useCallback(() => {
     setShowSongName(false);
   }, []);
@@ -959,7 +983,8 @@ export default function Home() {
           <ShareButton daysLeft={timeLeft.days} targetDate={targetDateString} />
           <MusicToggle 
             isPlaying={isPlaying} 
-            onToggle={toggleMusic} 
+            onToggle={toggleMusic}
+            onTurnOn={turnMusicOn}
             songUrl={currentSong}
             showSongName={showSongName}
             onHideSongName={hideSongName}
