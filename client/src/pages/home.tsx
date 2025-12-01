@@ -323,9 +323,9 @@ const itinerary: ItineraryDay[] = [
   {
     day: 1,
     location: "Rome",
-    title: "The Eternal City",
+    title: "The Eternal City - Arrival",
     activities: [
-      "Arrive at Rome Fiumicino Airport",
+      "Arrive at Rome Fiumicino Airport (May 13)",
       "Check into hotel near the Spanish Steps",
       "Evening stroll through Piazza Navona",
       "Dinner at a traditional trattoria in Trastevere"
@@ -347,55 +347,159 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 3,
-    location: "Florence",
-    title: "Renaissance Heart",
+    location: "Positano, Amalfi Coast",
+    title: "Coastal Paradise - Arrival",
     activities: [
-      "High-speed train to Florence",
-      "Visit the Uffizi Gallery (book ahead!)",
-      "Walk across Ponte Vecchio",
-      "Gelato tasting in Piazza della Signoria",
-      "Climb to Piazzale Michelangelo for sunset views"
+      "Travel to Naples (May 15)",
+      "Drive scenic route to Positano",
+      "Check into cliffside hotel",
+      "Beach time at Spiaggia Grande",
+      "Sunset aperitivo overlooking the sea"
     ],
-    icon: Church
+    icon: Mountain
   },
   {
     day: 4,
-    location: "Tuscany",
-    title: "Wine Country",
+    location: "Positano",
+    title: "Amalfi Coast Exploration",
     activities: [
-      "Day trip through Chianti wine region",
-      "Visit medieval San Gimignano",
-      "Wine tasting at a family vineyard",
-      "Traditional Tuscan lunch with local produce",
-      "Return to Florence for evening aperitivo"
-    ],
-    icon: Wine
-  },
-  {
-    day: 5,
-    location: "Venice",
-    title: "City of Canals",
-    activities: [
-      "Train journey to Venice Santa Lucia",
-      "Water taxi to hotel on the Grand Canal",
-      "Explore St. Mark's Basilica and the Doge's Palace",
-      "Get lost in the charming alleyways",
-      "Gondola ride at sunset"
+      "Boat trip to Emerald Grotto",
+      "Visit charming Amalfi town",
+      "Hiking along Sentiero Degli Dei (Path of Gods)",
+      "Fresh seafood lunch with sea views",
+      "Evening passeggiata through village"
     ],
     icon: Ship
   },
   {
-    day: 6,
-    location: "Amalfi Coast",
-    title: "Coastal Paradise",
+    day: 5,
+    location: "Positano",
+    title: "Amalfi Coast Relaxation",
     activities: [
-      "Fly to Naples, drive to Positano",
-      "Settle into cliffside accommodation",
-      "Beach time at Spiaggia Grande",
-      "Fresh seafood dinner overlooking the sea",
-      "Evening passeggiata along the coast"
+      "Leisurely beach morning",
+      "Explore Praiano nearby",
+      "Limoncello and local crafts",
+      "Sunset beach meditation",
+      "Dinner at local family trattoria"
+    ],
+    icon: Sun
+  },
+  {
+    day: 6,
+    location: "Tuscany",
+    title: "Wine Country - Arrival",
+    activities: [
+      "Drive to Tuscany countryside (May 18)",
+      "Check into agriturismo",
+      "Welcome wine tasting",
+      "Sunset over rolling vineyards",
+      "Dinner with local wine pairings"
+    ],
+    icon: Wine
+  },
+  {
+    day: 7,
+    location: "Tuscany",
+    title: "Chianti Wine Region",
+    activities: [
+      "Day trip through Chianti vineyards",
+      "Wine tasting at family vineyard",
+      "Visit medieval San Gimignano",
+      "Traditional Tuscan lunch",
+      "Market visit in Siena"
+    ],
+    icon: Wine
+  },
+  {
+    day: 8,
+    location: "Tuscany",
+    title: "Tuscan Villages & Culture",
+    activities: [
+      "Explore Monteriggioni medieval walls",
+      "Cooking class with local chef",
+      "Learn traditional pasta making",
+      "Lunch with your creations",
+      "Evening stroll through Val d'Orcia"
+    ],
+    icon: Building
+  },
+  {
+    day: 9,
+    location: "Tuscany",
+    title: "Hidden Gems of Tuscany",
+    activities: [
+      "Visit Pienza - Renaissance village",
+      "Pecorino cheese tasting",
+      "Thermal springs at Bagno Vignoni",
+      "Sunrise Hot air balloon ride (optional)",
+      "Farewell Tuscan dinner"
+    ],
+    icon: Landmark
+  },
+  {
+    day: 10,
+    location: "Cinque Terre",
+    title: "Villages of the Coast - Arrival",
+    activities: [
+      "Travel to Cinque Terre (May 22)",
+      "Check into Vernazza or Monterosso",
+      "Explore colorful fishing villages",
+      "Swimming in crystal waters",
+      "Fresh pasta with local seafood"
+    ],
+    icon: Ship
+  },
+  {
+    day: 11,
+    location: "Cinque Terre",
+    title: "Hiking & Villages",
+    activities: [
+      "Hike scenic Cinque Terre trails",
+      "Visit all 5 villages by boat & foot",
+      "Pesto making workshop",
+      "Sunset from cliff viewpoint",
+      "Wine tasting with anchovies"
     ],
     icon: Mountain
+  },
+  {
+    day: 12,
+    location: "Florence",
+    title: "Renaissance Heart - Arrival",
+    activities: [
+      "Train to Florence (May 24)",
+      "Check into hotel in historic center",
+      "Walk Ponte Vecchio at sunset",
+      "Gelato in Piazza della Signoria",
+      "Evening wine in Oltrarno"
+    ],
+    icon: Church
+  },
+  {
+    day: 13,
+    location: "Florence",
+    title: "Art & Culture",
+    activities: [
+      "Skip-the-line Uffizi Gallery tour",
+      "Visit Accademia to see David",
+      "Climb Duomo for city views",
+      "Leather workshop visit",
+      "Farewell dinner in Florence"
+    ],
+    icon: Landmark
+  },
+  {
+    day: 14,
+    location: "Venice",
+    title: "City of Canals - Finale",
+    activities: [
+      "High-speed train to Venice (May 26)",
+      "Water taxi to hotel on Grand Canal",
+      "St. Mark's Basilica & Doge's Palace",
+      "Gondola ride at sunset",
+      "Final Italian dinner with Prosecco"
+    ],
+    icon: Ship
   }
 ];
 
