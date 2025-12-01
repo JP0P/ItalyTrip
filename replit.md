@@ -72,6 +72,24 @@ Preferred communication style: Simple, everyday language.
 - `IStorage` interface defining CRUD operations
 - In-memory storage implementation (`MemStorage`) for development/testing
 - Storage interface supports user management (create, get by ID, get by username)
+- Chat message storage with create and list operations
+
+### Chat Feature
+
+**Chat Box Component** (`client/src/components/chat-box.tsx`)
+- Collapsible chat interface positioned in bottom-right corner
+- Expand/collapse functionality with smooth transitions
+- Nickname prompt on first message (stored in localStorage for persistence)
+- Real-time message display with auto-refresh every 3 seconds
+- Avatar system with color-coded initials based on nickname
+
+**Chat API Endpoints**
+- `GET /api/chat/messages` - Retrieves all chat messages sorted by timestamp
+- `POST /api/chat/messages` - Creates a new message (requires nickname and message)
+
+**Chat Schema** (in `shared/schema.ts`)
+- `chatMessages` table with id, nickname, message, and createdAt fields
+- Zod validation for message creation
 
 ### External Dependencies
 
