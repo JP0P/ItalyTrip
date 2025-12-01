@@ -352,7 +352,7 @@ function MusicToggle({
     if (showSongName) {
       const timer = setTimeout(() => {
         onHideSongName();
-      }, 3000);
+      }, 6000);
       return () => clearTimeout(timer);
     }
   }, [showSongName, onHideSongName]);
