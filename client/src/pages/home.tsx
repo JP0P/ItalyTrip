@@ -20,9 +20,17 @@ interface TimeLeft {
 
 interface ItineraryDay {
   day: number;
+  date: string;
   location: string;
   title: string;
   activities: string[];
+  icon: typeof Landmark;
+}
+
+interface LocationGroup {
+  location: string;
+  dateRange: string;
+  days: ItineraryDay[];
   icon: typeof Landmark;
 }
 
@@ -143,14 +151,16 @@ function HighlightCard({ icon: Icon, title, description }: { icon: typeof Coffee
   );
 }
 
-function ItineraryCard({ day, isExpanded, onToggle }: { day: ItineraryDay; isExpanded: boolean; onToggle: () => void }) {
-  const Icon = day.icon;
+function LocationCard({ group, isExpanded, onToggle }: { group: LocationGroup; isExpanded: boolean; onToggle: () => void }) {
+  const Icon = group.icon;
+  const dayCount = group.days.length;
+  const dayLabel = dayCount === 1 ? "1 Day" : `${dayCount} Days`;
   
   return (
     <Card 
-      className="overflow-hidden hover-elevate transition-all duration-300 cursor-pointer"
+      className="overflow-visible hover-elevate transition-all duration-300 cursor-pointer"
       onClick={onToggle}
-      data-testid={`itinerary-day-${day.day}`}
+      data-testid={`itinerary-location-${group.location.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
     >
       <div className="p-5 lg:p-6">
         <div className="flex items-center justify-between gap-4">
@@ -159,9 +169,8 @@ function ItineraryCard({ day, isExpanded, onToggle }: { day: ItineraryDay; isExp
               <Icon className="w-6 h-6 text-italy-red" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground uppercase tracking-wide">Day {day.day}</p>
-              <h3 className="font-serif text-lg font-semibold text-foreground">{day.location}</h3>
-              <p className="text-sm text-muted-foreground">{day.title}</p>
+              <h3 className="font-serif text-xl font-semibold text-foreground">{group.location}</h3>
+              <p className="text-sm text-muted-foreground">{group.dateRange} ({dayLabel})</p>
             </div>
           </div>
           <Button size="icon" variant="ghost" className="flex-shrink-0">
@@ -170,15 +179,28 @@ function ItineraryCard({ day, isExpanded, onToggle }: { day: ItineraryDay; isExp
         </div>
         
         {isExpanded && (
-          <div className="mt-4 pt-4 border-t border-border">
-            <ul className="space-y-2">
-              {day.activities.map((activity, index) => (
-                <li key={index} className="flex items-start gap-3 text-muted-foreground">
-                  <span className="text-italy-green mt-1">•</span>
-                  <span>{activity}</span>
-                </li>
-              ))}
-            </ul>
+          <div className="mt-4 pt-4 border-t border-border space-y-6">
+            {group.days.map((day) => (
+              <div key={day.day} className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-italy-green/10 text-italy-green text-sm font-semibold">
+                    {day.day}
+                  </span>
+                  <div>
+                    <p className="font-medium text-foreground">{day.title}</p>
+                    <p className="text-sm text-muted-foreground">{day.date}</p>
+                  </div>
+                </div>
+                <ul className="ml-11 space-y-1.5">
+                  {day.activities.map((activity, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <span className="text-italy-green mt-0.5">•</span>
+                      <span>{activity}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         )}
       </div>
@@ -333,10 +355,11 @@ function DestinationBadge({ name }: { name: string }) {
 const itinerary: ItineraryDay[] = [
   {
     day: 1,
+    date: "May 13",
     location: "Rome",
     title: "The Eternal City - Arrival",
     activities: [
-      "Arrive at Rome Fiumicino Airport (May 13)",
+      "Arrive at Rome Fiumicino Airport",
       "Check into hotel near the Spanish Steps",
       "Evening stroll through Piazza Navona",
       "Dinner at a traditional trattoria in Trastevere"
@@ -345,6 +368,7 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 2,
+    date: "May 14",
     location: "Rome",
     title: "Ancient Wonders",
     activities: [
@@ -358,10 +382,11 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 3,
-    location: "Positano, Amalfi Coast",
+    date: "May 15",
+    location: "Amalfi Coast",
     title: "Coastal Paradise - Arrival",
     activities: [
-      "Travel to Naples (May 15)",
+      "Travel to Naples via high-speed train",
       "Drive scenic route to Positano",
       "Check into cliffside hotel",
       "Beach time at Spiaggia Grande",
@@ -371,7 +396,8 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 4,
-    location: "Positano",
+    date: "May 16",
+    location: "Amalfi Coast",
     title: "Amalfi Coast Exploration",
     activities: [
       "Boat trip to Emerald Grotto",
@@ -384,7 +410,8 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 5,
-    location: "Positano",
+    date: "May 17",
+    location: "Amalfi Coast",
     title: "Amalfi Coast Relaxation",
     activities: [
       "Leisurely beach morning",
@@ -397,10 +424,11 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 6,
+    date: "May 18",
     location: "Tuscany",
     title: "Wine Country - Arrival",
     activities: [
-      "Drive to Tuscany countryside (May 18)",
+      "Drive to Tuscany countryside",
       "Check into agriturismo",
       "Welcome wine tasting",
       "Sunset over rolling vineyards",
@@ -410,6 +438,7 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 7,
+    date: "May 19",
     location: "Tuscany",
     title: "Chianti Wine Region",
     activities: [
@@ -423,6 +452,7 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 8,
+    date: "May 20",
     location: "Tuscany",
     title: "Tuscan Villages & Culture",
     activities: [
@@ -436,23 +466,25 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 9,
+    date: "May 21",
     location: "Tuscany",
     title: "Hidden Gems of Tuscany",
     activities: [
       "Visit Pienza - Renaissance village",
       "Pecorino cheese tasting",
       "Thermal springs at Bagno Vignoni",
-      "Sunrise Hot air balloon ride (optional)",
+      "Sunrise hot air balloon ride (optional)",
       "Farewell Tuscan dinner"
     ],
     icon: Landmark
   },
   {
     day: 10,
+    date: "May 22",
     location: "Cinque Terre",
     title: "Villages of the Coast - Arrival",
     activities: [
-      "Travel to Cinque Terre (May 22)",
+      "Travel to Cinque Terre",
       "Check into Vernazza or Monterosso",
       "Explore colorful fishing villages",
       "Swimming in crystal waters",
@@ -462,6 +494,7 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 11,
+    date: "May 23",
     location: "Cinque Terre",
     title: "Hiking & Villages",
     activities: [
@@ -475,10 +508,11 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 12,
+    date: "May 24",
     location: "Florence",
     title: "Renaissance Heart - Arrival",
     activities: [
-      "Train to Florence (May 24)",
+      "Train to Florence",
       "Check into hotel in historic center",
       "Walk Ponte Vecchio at sunset",
       "Gelato in Piazza della Signoria",
@@ -488,6 +522,7 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 13,
+    date: "May 25",
     location: "Florence",
     title: "Art & Culture",
     activities: [
@@ -501,10 +536,11 @@ const itinerary: ItineraryDay[] = [
   },
   {
     day: 14,
+    date: "May 26",
     location: "Venice",
     title: "City of Canals - Finale",
     activities: [
-      "High-speed train to Venice (May 26)",
+      "High-speed train to Venice",
       "Water taxi to hotel on Grand Canal",
       "St. Mark's Basilica & Doge's Palace",
       "Gondola ride at sunset",
@@ -513,6 +549,36 @@ const itinerary: ItineraryDay[] = [
     icon: Ship
   }
 ];
+
+function groupItineraryByLocation(days: ItineraryDay[]): LocationGroup[] {
+  const groups: LocationGroup[] = [];
+  let currentGroup: LocationGroup | null = null;
+
+  days.forEach((day) => {
+    if (!currentGroup || currentGroup.location !== day.location) {
+      if (currentGroup) {
+        groups.push(currentGroup);
+      }
+      currentGroup = {
+        location: day.location,
+        dateRange: day.date,
+        days: [day],
+        icon: day.icon
+      };
+    } else {
+      currentGroup.days.push(day);
+      currentGroup.dateRange = `${currentGroup.days[0].date} - ${day.date}`;
+    }
+  });
+
+  if (currentGroup) {
+    groups.push(currentGroup);
+  }
+
+  return groups;
+}
+
+const locationGroups = groupItineraryByLocation(itinerary);
 
 const defaultPackingCategories: PackingCategory[] = [
   {
@@ -591,7 +657,7 @@ export default function Home() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
   const [prevTimeLeft, setPrevTimeLeft] = useState<TimeLeft>(timeLeft);
   const [showConfetti, setShowConfetti] = useState(false);
-  const [expandedDays, setExpandedDays] = useState<number[]>([1]);
+  const [expandedLocations, setExpandedLocations] = useState<string[]>([locationGroups[0]?.location || '']);
   const [isPlaying, setIsPlaying] = useState(false);
   const [packingCategories, setPackingCategories] = useState<PackingCategory[]>(() => {
     const saved = localStorage.getItem('italy-packing-list');
@@ -623,9 +689,9 @@ export default function Home() {
     localStorage.setItem('italy-packing-list', JSON.stringify(packingCategories));
   }, [packingCategories]);
 
-  const toggleDay = (day: number) => {
-    setExpandedDays(prev => 
-      prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
+  const toggleLocation = (location: string) => {
+    setExpandedLocations(prev => 
+      prev.includes(location) ? prev.filter(l => l !== location) : [...prev, location]
     );
   };
 
@@ -818,17 +884,17 @@ export default function Home() {
               Your Italian Adventure
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Day by day, explore the wonders of Italy. Click each day to reveal the activities planned.
+              Explore each destination and the activities planned. Click to reveal the full itinerary.
             </p>
           </div>
 
           <div className="space-y-4">
-            {itinerary.map((day) => (
-              <ItineraryCard
-                key={day.day}
-                day={day}
-                isExpanded={expandedDays.includes(day.day)}
-                onToggle={() => toggleDay(day.day)}
+            {locationGroups.map((group) => (
+              <LocationCard
+                key={group.location}
+                group={group}
+                isExpanded={expandedLocations.includes(group.location)}
+                onToggle={() => toggleLocation(group.location)}
               />
             ))}
           </div>
