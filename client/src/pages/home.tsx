@@ -984,7 +984,7 @@ export default function Home() {
               Your Italian Adventure
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Explore each destination and the activities planned. Click to reveal the full itinerary.
+              Explore each destination and activity.
             </p>
           </div>
 
