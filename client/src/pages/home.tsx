@@ -690,14 +690,11 @@ const defaultPackingCategories: PackingCategory[] = [
 ];
 
 const traditionalItalianSongs = [
-  'https://archive.org/download/lp_italian-folk-songs_various/disc1/01.01.%20Calabria%20%28Tarantella%20Calabrese%29%20And%20Sardegna.mp3',
-  'https://archive.org/download/lp_italian-folk-songs_various/disc1/01.02.%20Sicilia%20And%20Campania.mp3',
-  'https://archive.org/download/lp_italian-folk-songs_various/disc1/01.03.%20Puglie%20And%20Molise.mp3',
-  'https://archive.org/download/lp_italian-folk-songs_various/disc1/01.04.%20Lazio%20And%20Toscana.mp3',
-  'https://archive.org/download/lp_italian-folk-songs_various/disc1/01.05.%20Emilia%20And%20Friuli.mp3',
-  'https://archive.org/download/lp_melodie-ditaly_the-di-mara-sisters/disc1/01.01.%20Funiculi%20Funicula.mp3',
-  'https://archive.org/download/lp_melodie-ditaly_the-di-mara-sisters/disc1/01.02.%20Santa%20Lucia.mp3',
-  'https://archive.org/download/lp_melodie-ditaly_the-di-mara-sisters/disc1/01.03.%20O%20Sole%20Mio.mp3',
+  'https://archive.org/download/TarantellaNapoletana/Tarantella%20Napoletana.mp3',
+  'https://archive.org/download/OSoleMio/03OSoleMio.mp3',
+  'https://archive.org/download/78_santa-lucia_enrico-caruso-teodoro-cottrau_gbia0002177a/Santa%20Lucia%20-%20Enrico%20Caruso.mp3',
+  'https://archive.org/download/78_funiculi-funicula_enrico-caruso-luigi-denza_gbia0000876a/Funicul%C3%AC%20Funicul%C3%A0%20-%20Enrico%20Caruso.mp3',
+  'https://archive.org/download/78_torna-a-surriento_enrico-caruso-ernesto-de-curtis_gbia0002180a/Torna%20A%20Surriento%20-%20Enrico%20Caruso.mp3',
 ];
 
 function getRandomSong(): string {
@@ -796,24 +793,21 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (!audioRef.current) {
-      audioRef.current = new Audio(currentSong);
-      audioRef.current.loop = true;
-      audioRef.current.volume = 0.3;
-    }
+    audioRef.current = new Audio(currentSong);
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.3;
     
-    if (isPlaying) {
-      audioRef.current.play().catch(() => {
-        setIsPlaying(false);
-      });
-    }
+    audioRef.current.play().catch(() => {
+      setIsPlaying(false);
+    });
     
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current = null;
       }
     };
-  }, []);
+  }, [currentSong]);
 
   const toggleMusic = () => {
     if (!audioRef.current) {
@@ -822,14 +816,15 @@ export default function Home() {
       audioRef.current.volume = 0.3;
     }
 
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
+    if (audioRef.current.paused) {
       audioRef.current.play().catch(() => {
         console.log('Audio playback requires user interaction');
       });
+      setIsPlaying(true);
+    } else {
+      audioRef.current.pause();
+      setIsPlaying(false);
     }
-    setIsPlaying(!isPlaying);
   };
 
   const isCountdownComplete = timeLeft.total <= 0;
