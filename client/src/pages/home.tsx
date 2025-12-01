@@ -474,7 +474,7 @@ const itinerary: ItineraryDay[] = [
     title: "The Eternal City - Arrival",
     activities: [
       "Arrive at Rome Fiumicino Airport",
-      "Check into hotel near the Spanish Steps",
+      "Check into hotel in the historic center",
       "Evening stroll through Piazza Navona",
       "Dinner at a traditional trattoria in Trastevere"
     ],

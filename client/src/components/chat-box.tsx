@@ -134,14 +134,19 @@ export function ChatBox() {
             className="h-16 w-16 object-contain drop-shadow-lg" 
           />
         </button>
-        {messages.length > 0 && (
-          <span 
-            className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-italy-red text-white text-xs flex items-center justify-center font-medium"
-            data-testid="badge-message-count"
-          >
-            {messages.length > 9 ? "9+" : messages.length}
-          </span>
-        )}
+        {(() => {
+          const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+          const recentMessages = messages.filter(msg => new Date(msg.createdAt).getTime() > oneDayAgo);
+          if (recentMessages.length === 0) return null;
+          return (
+            <span 
+              className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-italy-red text-white text-xs flex items-center justify-center font-medium"
+              data-testid="badge-message-count"
+            >
+              {recentMessages.length > 9 ? "9+" : recentMessages.length}
+            </span>
+          );
+        })()}
       </div>
     );
   }
