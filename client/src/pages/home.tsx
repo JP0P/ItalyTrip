@@ -848,9 +848,9 @@ export default function Home() {
     audioRef.current.loop = true;
     audioRef.current.volume = 0.3;
     
-    audioRef.current.play().then(() => {
-      setShowSongName(true);
-    }).catch(() => {
+    setShowSongName(true);
+    
+    audioRef.current.play().catch(() => {
       setIsPlaying(false);
     });
     
