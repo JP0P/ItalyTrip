@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { X, Smartphone, Share, Plus } from "lucide-react";
+import { X, Heart, Share, Plus } from "lucide-react";
 
 type DeviceType = "ios" | "android" | "other";
 
@@ -57,82 +57,69 @@ export function AddToHomePrompt() {
 
   if (!isVisible) return null;
 
+  const getInstruction = () => {
+    if (deviceType === "ios") {
+      return (
+        <>
+          <Share className="h-3 w-3 text-italy-green inline mr-1" />
+          <span className="font-medium">Share</span> {">"} Add to Home
+        </>
+      );
+    }
+    if (deviceType === "android") {
+      return (
+        <>
+          <Plus className="h-3 w-3 text-italy-green inline mr-1" />
+          <span className="font-medium">Menu</span> {">"} Add to Home
+        </>
+      );
+    }
+    return (
+      <>
+        <Plus className="h-3 w-3 text-italy-green inline mr-1" />
+        <span className="font-medium">Install</span> from browser menu
+      </>
+    );
+  };
+
   return (
     <div
-      className={`fixed bottom-20 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-50 transition-all duration-300 ${
-        isAnimating ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      className={`fixed bottom-24 right-4 z-50 transition-all duration-300 ${
+        isAnimating ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-2 scale-95"
       }`}
       data-testid="prompt-add-to-home"
     >
-      <div className="relative overflow-visible rounded-2xl bg-gradient-to-br from-white to-green-50 dark:from-gray-900 dark:to-green-950/30 border border-italy-green/20 shadow-lg">
-        <div className="absolute -top-3 -right-2 w-8 h-8 bg-italy-red rounded-full flex items-center justify-center animate-bounce shadow-md">
-          <span className="text-white text-xs font-bold">!</span>
+      <div className="relative">
+        <div className="absolute -top-1 -left-1 animate-pulse">
+          <Heart className="h-4 w-4 text-italy-red fill-italy-red" />
         </div>
         
-        <Button
-          size="icon"
-          variant="ghost"
-          className="absolute top-2 right-2 h-6 w-6 rounded-full text-muted-foreground"
-          onClick={handleDismiss}
-          data-testid="button-dismiss-prompt"
-        >
-          <X className="h-3 w-3" />
-        </Button>
+        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-italy-green/20 overflow-hidden max-w-[200px]">
+          <div className="p-3 pb-2">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="absolute top-1 right-1 h-5 w-5 rounded-full text-muted-foreground/60"
+              onClick={handleDismiss}
+              data-testid="button-dismiss-prompt"
+            >
+              <X className="h-2.5 w-2.5" />
+            </Button>
 
-        <div className="p-4 pr-8">
-          <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-italy-green to-green-600 flex items-center justify-center shadow-sm">
-              <Smartphone className="h-5 w-5 text-white" />
-            </div>
+            <p className="text-[11px] font-medium text-foreground pr-4 leading-tight">
+              Save me to your home screen!
+            </p>
             
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-foreground text-sm mb-0.5">
-                Portami a casa!
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Add this trip countdown to your home screen for quick access
-              </p>
-              
-              <div className="mt-3 p-2.5 rounded-lg bg-background/80 dark:bg-background/50 border border-border/50">
-                {deviceType === "ios" ? (
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Share className="h-3.5 w-3.5 text-italy-green flex-shrink-0" />
-                    <span>
-                      Tap <span className="font-medium text-foreground">Share</span> then{" "}
-                      <span className="font-medium text-foreground">"Add to Home Screen"</span>
-                    </span>
-                  </div>
-                ) : deviceType === "android" ? (
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Plus className="h-3.5 w-3.5 text-italy-green flex-shrink-0" />
-                    <span>
-                      Tap <span className="font-medium text-foreground">Menu</span> then{" "}
-                      <span className="font-medium text-foreground">"Add to Home Screen"</span>
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Plus className="h-3.5 w-3.5 text-italy-green flex-shrink-0" />
-                    <span>
-                      Use your browser menu to{" "}
-                      <span className="font-medium text-foreground">"Install"</span> or{" "}
-                      <span className="font-medium text-foreground">"Add to Home Screen"</span>
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              <p className="mt-2 text-[10px] text-muted-foreground/70 italic">
-                Ciao bella! Never lose track of your Italian adventure
-              </p>
-            </div>
+            <p className="text-[10px] text-muted-foreground mt-1.5 leading-snug">
+              {getInstruction()}
+            </p>
           </div>
-        </div>
 
-        <div className="h-1 w-full flex">
-          <div className="flex-1 bg-italy-green" />
-          <div className="flex-1 bg-white dark:bg-gray-200" />
-          <div className="flex-1 bg-italy-red" />
+          <div className="h-0.5 w-full flex">
+            <div className="flex-1 bg-italy-green" />
+            <div className="flex-1 bg-white dark:bg-gray-300" />
+            <div className="flex-1 bg-italy-red" />
+          </div>
         </div>
       </div>
     </div>
