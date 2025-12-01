@@ -563,7 +563,7 @@ function getTargetDateFromUrl(): Date {
       return parsed;
     }
   }
-  return new Date('2026-05-12T00:00:00');
+  return new Date('2026-05-12T19:40:00');
 }
 
 export default function Home() {
