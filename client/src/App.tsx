@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
 import { ChatBox } from "@/components/chat-box";
+import { AddToHomePrompt } from "@/components/add-to-home-prompt";
 
 function Router() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Toaster />
         <Router />
         <ChatBox />
+        <AddToHomePrompt />
       </TooltipProvider>
     </QueryClientProvider>
   );
