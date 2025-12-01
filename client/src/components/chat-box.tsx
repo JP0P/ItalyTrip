@@ -4,11 +4,35 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { X, Send, User } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { ChatMessage } from "@shared/schema";
 import gelatoIcon from "@assets/14E66A51-6306-4DBD-B316-9765CD873462_1764565746408.png";
+
+import pizzaAvatar from "@assets/generated_images/kawaii_pizza_slice_avatar.png";
+import espressoAvatar from "@assets/generated_images/kawaii_espresso_cup_avatar.png";
+import pastaAvatar from "@assets/generated_images/kawaii_pasta_bowl_avatar.png";
+import cannoliAvatar from "@assets/generated_images/kawaii_cannoli_avatar.png";
+import tiramisuAvatar from "@assets/generated_images/kawaii_tiramisu_avatar.png";
+import meatballAvatar from "@assets/generated_images/kawaii_meatball_avatar.png";
+import bruschettaAvatar from "@assets/generated_images/kawaii_bruschetta_avatar.png";
+import oliveAvatar from "@assets/generated_images/kawaii_olive_avatar.png";
+import tomatoAvatar from "@assets/generated_images/kawaii_tomato_avatar.png";
+import mozzarellaAvatar from "@assets/generated_images/kawaii_mozzarella_avatar.png";
+
+const avatarImages = [
+  pizzaAvatar,
+  espressoAvatar,
+  pastaAvatar,
+  cannoliAvatar,
+  tiramisuAvatar,
+  meatballAvatar,
+  bruschettaAvatar,
+  oliveAvatar,
+  tomatoAvatar,
+  mozzarellaAvatar,
+];
 
 function formatTime(date: Date | string) {
   const d = new Date(date);
@@ -19,20 +43,12 @@ function getInitials(nickname: string) {
   return nickname.slice(0, 2).toUpperCase();
 }
 
-function getAvatarColor(nickname: string) {
-  const colors = [
-    "bg-italy-green/20 text-italy-green",
-    "bg-italy-red/20 text-italy-red",
-    "bg-primary/20 text-primary",
-    "bg-purple-500/20 text-purple-600",
-    "bg-amber-500/20 text-amber-600",
-    "bg-cyan-500/20 text-cyan-600",
-  ];
+function getAvatarImage(nickname: string) {
   let hash = 0;
   for (let i = 0; i < nickname.length; i++) {
     hash = nickname.charCodeAt(i) + ((hash << 5) - hash);
   }
-  return colors[Math.abs(hash) % colors.length];
+  return avatarImages[Math.abs(hash) % avatarImages.length];
 }
 
 export function ChatBox() {
@@ -190,7 +206,12 @@ export function ChatBox() {
                   data-testid={`message-${msg.id}`}
                 >
                   <Avatar className="h-8 w-8 flex-shrink-0">
-                    <AvatarFallback className={getAvatarColor(msg.nickname)}>
+                    <AvatarImage 
+                      src={getAvatarImage(msg.nickname)} 
+                      alt={msg.nickname}
+                      className="object-cover"
+                    />
+                    <AvatarFallback>
                       {getInitials(msg.nickname)}
                     </AvatarFallback>
                   </Avatar>
