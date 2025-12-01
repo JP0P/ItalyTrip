@@ -1,6 +1,13 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Card } from "@/components/ui/card";
-import { Plane, MapPin, Coffee, UtensilsCrossed, Camera, Wine, Sun, Heart, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { 
+  Plane, MapPin, Coffee, UtensilsCrossed, Camera, Wine, Sun, Heart, Sparkles,
+  ChevronDown, ChevronUp, CheckSquare, Volume2, VolumeX, Share2, Copy, Check,
+  Building, Landmark, Ship, Mountain, Church
+} from "lucide-react";
 import heroImage from "@assets/generated_images/amalfi_coast_sunset_view.png";
 
 interface TimeLeft {
@@ -9,6 +16,25 @@ interface TimeLeft {
   minutes: number;
   seconds: number;
   total: number;
+}
+
+interface ItineraryDay {
+  day: number;
+  location: string;
+  title: string;
+  activities: string[];
+  icon: typeof Landmark;
+}
+
+interface PackingItem {
+  id: string;
+  name: string;
+  checked: boolean;
+}
+
+interface PackingCategory {
+  name: string;
+  items: PackingItem[];
 }
 
 function ItalianFlagStripe() {
@@ -106,6 +132,184 @@ function HighlightCard({ icon: Icon, title, description }: { icon: typeof Coffee
   );
 }
 
+function ItineraryCard({ day, isExpanded, onToggle }: { day: ItineraryDay; isExpanded: boolean; onToggle: () => void }) {
+  const Icon = day.icon;
+  
+  return (
+    <Card 
+      className="overflow-hidden hover-elevate transition-all duration-300 cursor-pointer"
+      onClick={onToggle}
+      data-testid={`itinerary-day-${day.day}`}
+    >
+      <div className="p-5 lg:p-6">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-italy-red/10 flex items-center justify-center">
+              <Icon className="w-6 h-6 text-italy-red" />
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground uppercase tracking-wide">Day {day.day}</p>
+              <h3 className="font-serif text-lg font-semibold text-foreground">{day.location}</h3>
+              <p className="text-sm text-muted-foreground">{day.title}</p>
+            </div>
+          </div>
+          <Button size="icon" variant="ghost" className="flex-shrink-0">
+            {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+          </Button>
+        </div>
+        
+        {isExpanded && (
+          <div className="mt-4 pt-4 border-t border-border">
+            <ul className="space-y-2">
+              {day.activities.map((activity, index) => (
+                <li key={index} className="flex items-start gap-3 text-muted-foreground">
+                  <span className="text-italy-green mt-1">•</span>
+                  <span>{activity}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </Card>
+  );
+}
+
+function PackingChecklist({ categories, onToggleItem }: { categories: PackingCategory[]; onToggleItem: (categoryName: string, itemId: string) => void }) {
+  const totalItems = categories.reduce((acc, cat) => acc + cat.items.length, 0);
+  const checkedItems = categories.reduce((acc, cat) => acc + cat.items.filter(item => item.checked).length, 0);
+  const progress = totalItems > 0 ? (checkedItems / totalItems) * 100 : 0;
+
+  return (
+    <div className="space-y-6">
+      {/* Progress Bar */}
+      <div>
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-sm text-muted-foreground">Packing Progress</span>
+          <span className="text-sm font-medium text-foreground">{checkedItems}/{totalItems}</span>
+        </div>
+        <div className="h-2 bg-muted rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-italy-green transition-all duration-500 rounded-full"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Categories */}
+      {categories.map((category) => (
+        <div key={category.name}>
+          <h4 className="font-medium text-foreground mb-3">{category.name}</h4>
+          <div className="space-y-2">
+            {category.items.map((item) => (
+              <label
+                key={item.id}
+                className="flex items-center gap-3 p-3 rounded-lg bg-card border border-border hover-elevate cursor-pointer transition-all"
+                data-testid={`packing-item-${item.id}`}
+              >
+                <Checkbox 
+                  checked={item.checked}
+                  onCheckedChange={() => onToggleItem(category.name, item.id)}
+                />
+                <span className={`text-sm ${item.checked ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                  {item.name}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MusicToggle({ isPlaying, onToggle }: { isPlaying: boolean; onToggle: () => void }) {
+  return (
+    <Button
+      size="icon"
+      variant="ghost"
+      onClick={onToggle}
+      className="glass-effect text-white border-white/20"
+      data-testid="button-music-toggle"
+      aria-label={isPlaying ? "Pause music" : "Play music"}
+    >
+      {isPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+    </Button>
+  );
+}
+
+function ShareButton({ daysLeft, targetDate }: { daysLeft: number; targetDate: string }) {
+  const [copied, setCopied] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleShare = async () => {
+    const baseUrl = window.location.origin + window.location.pathname;
+    const shareUrl = `${baseUrl}?date=${encodeURIComponent(targetDate)}`;
+    const shareText = `Only ${daysLeft} days until our Italy trip! Join the countdown!`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Italy Trip Countdown',
+          text: shareText,
+          url: shareUrl,
+        });
+        return;
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          await copyToClipboard(shareUrl);
+        }
+      }
+    } else {
+      await copyToClipboard(shareUrl);
+    }
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setError(false);
+        setTimeout(() => setCopied(false), 2000);
+      } else {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          setCopied(true);
+          setError(false);
+          setTimeout(() => setCopied(false), 2000);
+        } catch {
+          setError(true);
+          setTimeout(() => setError(false), 2000);
+        }
+        document.body.removeChild(textArea);
+      }
+    } catch {
+      setError(true);
+      setTimeout(() => setError(false), 2000);
+    }
+  };
+
+  return (
+    <Button
+      size="icon"
+      variant="ghost"
+      onClick={handleShare}
+      className={`glass-effect text-white border-white/20 ${error ? 'border-red-500/50' : ''}`}
+      data-testid="button-share"
+      aria-label={copied ? "Link copied!" : error ? "Copy failed" : "Share countdown"}
+    >
+      {copied ? <Check className="w-5 h-5 text-green-400" /> : error ? <Copy className="w-5 h-5 text-red-400" /> : <Share2 className="w-5 h-5" />}
+    </Button>
+  );
+}
+
 function DestinationBadge({ name }: { name: string }) {
   return (
     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border">
@@ -115,8 +319,142 @@ function DestinationBadge({ name }: { name: string }) {
   );
 }
 
+const itinerary: ItineraryDay[] = [
+  {
+    day: 1,
+    location: "Rome",
+    title: "The Eternal City",
+    activities: [
+      "Arrive at Rome Fiumicino Airport",
+      "Check into hotel near the Spanish Steps",
+      "Evening stroll through Piazza Navona",
+      "Dinner at a traditional trattoria in Trastevere"
+    ],
+    icon: Landmark
+  },
+  {
+    day: 2,
+    location: "Rome",
+    title: "Ancient Wonders",
+    activities: [
+      "Skip-the-line tour of the Colosseum",
+      "Explore the Roman Forum and Palatine Hill",
+      "Lunch near Campo de' Fiori market",
+      "Toss a coin in the Trevi Fountain",
+      "Sunset at Pincian Hill overlooking the city"
+    ],
+    icon: Building
+  },
+  {
+    day: 3,
+    location: "Florence",
+    title: "Renaissance Heart",
+    activities: [
+      "High-speed train to Florence",
+      "Visit the Uffizi Gallery (book ahead!)",
+      "Walk across Ponte Vecchio",
+      "Gelato tasting in Piazza della Signoria",
+      "Climb to Piazzale Michelangelo for sunset views"
+    ],
+    icon: Church
+  },
+  {
+    day: 4,
+    location: "Tuscany",
+    title: "Wine Country",
+    activities: [
+      "Day trip through Chianti wine region",
+      "Visit medieval San Gimignano",
+      "Wine tasting at a family vineyard",
+      "Traditional Tuscan lunch with local produce",
+      "Return to Florence for evening aperitivo"
+    ],
+    icon: Wine
+  },
+  {
+    day: 5,
+    location: "Venice",
+    title: "City of Canals",
+    activities: [
+      "Train journey to Venice Santa Lucia",
+      "Water taxi to hotel on the Grand Canal",
+      "Explore St. Mark's Basilica and the Doge's Palace",
+      "Get lost in the charming alleyways",
+      "Gondola ride at sunset"
+    ],
+    icon: Ship
+  },
+  {
+    day: 6,
+    location: "Amalfi Coast",
+    title: "Coastal Paradise",
+    activities: [
+      "Fly to Naples, drive to Positano",
+      "Settle into cliffside accommodation",
+      "Beach time at Spiaggia Grande",
+      "Fresh seafood dinner overlooking the sea",
+      "Evening passeggiata along the coast"
+    ],
+    icon: Mountain
+  }
+];
+
+const defaultPackingCategories: PackingCategory[] = [
+  {
+    name: "Essentials",
+    items: [
+      { id: "passport", name: "Passport", checked: false },
+      { id: "wallet", name: "Wallet & cards", checked: false },
+      { id: "phone", name: "Phone & charger", checked: false },
+      { id: "adapter", name: "European adapter", checked: false },
+      { id: "tickets", name: "Flight tickets", checked: false },
+    ]
+  },
+  {
+    name: "Clothing",
+    items: [
+      { id: "comfortable-shoes", name: "Comfortable walking shoes", checked: false },
+      { id: "light-layers", name: "Light layers for evenings", checked: false },
+      { id: "swimwear", name: "Swimwear", checked: false },
+      { id: "sun-hat", name: "Sun hat", checked: false },
+      { id: "dressy-outfit", name: "Nice outfit for dinners", checked: false },
+    ]
+  },
+  {
+    name: "Accessories",
+    items: [
+      { id: "sunglasses", name: "Sunglasses", checked: false },
+      { id: "camera", name: "Camera", checked: false },
+      { id: "daypack", name: "Day pack/backpack", checked: false },
+      { id: "umbrella", name: "Compact umbrella", checked: false },
+    ]
+  },
+  {
+    name: "Toiletries",
+    items: [
+      { id: "sunscreen", name: "Sunscreen SPF 50+", checked: false },
+      { id: "medications", name: "Medications", checked: false },
+      { id: "toiletry-bag", name: "Toiletry bag", checked: false },
+    ]
+  }
+];
+
+function getTargetDateFromUrl(): Date {
+  const urlParams = new URLSearchParams(window.location.search);
+  const dateParam = urlParams.get('date');
+  if (dateParam) {
+    const parsed = new Date(dateParam);
+    if (!isNaN(parsed.getTime())) {
+      return parsed;
+    }
+  }
+  return new Date('2026-05-12T00:00:00');
+}
+
 export default function Home() {
-  const targetDate = new Date('2026-05-12T00:00:00');
+  const [targetDate] = useState<Date>(() => getTargetDateFromUrl());
+  const targetDateString = targetDate.toISOString().split('T')[0];
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   
   const calculateTimeLeft = useCallback((): TimeLeft => {
     const now = new Date();
@@ -138,6 +476,12 @@ export default function Home() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft());
   const [prevTimeLeft, setPrevTimeLeft] = useState<TimeLeft>(timeLeft);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [expandedDays, setExpandedDays] = useState<number[]>([1]);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [packingCategories, setPackingCategories] = useState<PackingCategory[]>(() => {
+    const saved = localStorage.getItem('italy-packing-list');
+    return saved ? JSON.parse(saved) : defaultPackingCategories;
+  });
 
   useEffect(() => {
     if (timeLeft.total <= 0) {
@@ -159,6 +503,48 @@ export default function Home() {
 
     return () => clearInterval(timer);
   }, [calculateTimeLeft, timeLeft, showConfetti]);
+
+  useEffect(() => {
+    localStorage.setItem('italy-packing-list', JSON.stringify(packingCategories));
+  }, [packingCategories]);
+
+  const toggleDay = (day: number) => {
+    setExpandedDays(prev => 
+      prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
+    );
+  };
+
+  const togglePackingItem = (categoryName: string, itemId: string) => {
+    setPackingCategories(prev => 
+      prev.map(category => 
+        category.name === categoryName
+          ? {
+              ...category,
+              items: category.items.map(item =>
+                item.id === itemId ? { ...item, checked: !item.checked } : item
+              )
+            }
+          : category
+      )
+    );
+  };
+
+  const toggleMusic = () => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.3;
+    }
+
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(() => {
+        console.log('Audio playback requires user interaction');
+      });
+    }
+    setIsPlaying(!isPlaying);
+  };
 
   const isCountdownComplete = timeLeft.total <= 0;
 
@@ -201,8 +587,40 @@ export default function Home() {
             className="w-full h-full object-cover"
             data-testid="img-hero"
           />
-          {/* Dark gradient overlay for text legibility */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60" />
+        </div>
+
+        {/* Top Controls */}
+        <div className="absolute top-6 right-6 z-20 flex items-center gap-2">
+          <MusicToggle isPlaying={isPlaying} onToggle={toggleMusic} />
+          <ShareButton daysLeft={timeLeft.days} targetDate={targetDateString} />
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="glass-effect text-white border-white/20"
+                data-testid="button-packing-list"
+                aria-label="Open packing list"
+              >
+                <CheckSquare className="w-5 h-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+              <SheetHeader>
+                <SheetTitle className="font-serif text-xl flex items-center gap-2">
+                  <CheckSquare className="w-5 h-5 text-italy-green" />
+                  Packing Checklist
+                </SheetTitle>
+              </SheetHeader>
+              <div className="mt-6">
+                <PackingChecklist 
+                  categories={packingCategories} 
+                  onToggleItem={togglePackingItem}
+                />
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
 
         {/* Floating Icons */}
@@ -215,12 +633,10 @@ export default function Home() {
 
         {/* Content */}
         <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-          {/* Italian Flag Stripe */}
           <div className="w-32 mx-auto mb-6">
             <ItalianFlagStripe />
           </div>
 
-          {/* Heading */}
           <p className="text-white/80 uppercase tracking-[0.3em] text-sm mb-4 text-shadow">
             The adventure begins
           </p>
@@ -242,7 +658,6 @@ export default function Home() {
             )}
           </h1>
 
-          {/* Countdown Timer */}
           {!isCountdownComplete && (
             <div 
               className="flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-8 mt-10"
@@ -257,9 +672,8 @@ export default function Home() {
             </div>
           )}
 
-          {/* Target Date */}
           <p className="mt-10 text-white/70 text-lg sm:text-xl font-medium text-shadow" data-testid="text-target-date">
-            May 12, 2026
+            {targetDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
 
@@ -271,10 +685,37 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Trip Itinerary Section */}
+      <section className="py-16 lg:py-24 px-4 bg-card/50">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="w-24 mx-auto mb-6">
+              <ItalianFlagStripe />
+            </div>
+            <h2 className="font-serif text-3xl lg:text-4xl font-semibold text-foreground mb-4">
+              Your Italian Adventure
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Day by day, explore the wonders of Italy. Click each day to reveal the activities planned.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {itinerary.map((day) => (
+              <ItineraryCard
+                key={day.day}
+                day={day}
+                isExpanded={expandedDays.includes(day.day)}
+                onToggle={() => toggleDay(day.day)}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Trip Details Section */}
       <section className="py-16 lg:py-24 px-4">
         <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
           <div className="text-center mb-12 lg:mb-16">
             <div className="w-24 mx-auto mb-6">
               <ItalianFlagStripe />
@@ -288,9 +729,7 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Two Column Layout */}
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            {/* Left Column - Highlights */}
             <div className="space-y-4">
               {highlights.map((highlight, index) => (
                 <HighlightCard 
@@ -302,7 +741,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Right Column - Journey Snapshot */}
             <div>
               <Card className="p-6 lg:p-8 h-full">
                 <div className="flex items-center gap-3 mb-6">
@@ -313,7 +751,6 @@ export default function Home() {
                 </div>
                 
                 <div className="space-y-6">
-                  {/* Destinations */}
                   <div>
                     <p className="text-sm text-muted-foreground uppercase tracking-wide mb-3">Destinations</p>
                     <div className="flex flex-wrap gap-2">
@@ -323,27 +760,23 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Divider */}
                   <div className="border-t border-border" />
 
-                  {/* Trip Stats */}
                   <div className="grid grid-cols-2 gap-6">
                     <div>
                       <p className="text-sm text-muted-foreground uppercase tracking-wide mb-1">Departure</p>
-                      <p className="font-serif text-2xl font-semibold text-foreground">May 12</p>
-                      <p className="text-sm text-muted-foreground">2026</p>
+                      <p className="font-serif text-2xl font-semibold text-foreground">{targetDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                      <p className="text-sm text-muted-foreground">{targetDate.getFullYear()}</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground uppercase tracking-wide mb-1">Duration</p>
-                      <p className="font-serif text-2xl font-semibold text-foreground">Adventure</p>
-                      <p className="text-sm text-muted-foreground">of a lifetime</p>
+                      <p className="font-serif text-2xl font-semibold text-foreground">6 Days</p>
+                      <p className="text-sm text-muted-foreground">of adventure</p>
                     </div>
                   </div>
 
-                  {/* Divider */}
                   <div className="border-t border-border" />
 
-                  {/* Italian Phrase */}
                   <div className="text-center py-4">
                     <p className="font-serif text-2xl italic text-foreground mb-2">"Viaggiare è vivere"</p>
                     <p className="text-sm text-muted-foreground">To travel is to live</p>
