@@ -691,10 +691,10 @@ const defaultPackingCategories: PackingCategory[] = [
 
 const traditionalItalianSongs = [
   'https://archive.org/download/TarantellaNapoletana/Tarantella%20Napoletana.mp3',
-  'https://archive.org/download/OSoleMio/03OSoleMio.mp3',
-  'https://archive.org/download/78_santa-lucia_enrico-caruso-teodoro-cottrau_gbia0002177a/Santa%20Lucia%20-%20Enrico%20Caruso.mp3',
-  'https://archive.org/download/78_funiculi-funicula_enrico-caruso-luigi-denza_gbia0000876a/Funicul%C3%AC%20Funicul%C3%A0%20-%20Enrico%20Caruso.mp3',
-  'https://archive.org/download/78_torna-a-surriento_enrico-caruso-ernesto-de-curtis_gbia0002180a/Torna%20A%20Surriento%20-%20Enrico%20Caruso.mp3',
+  'https://archive.org/download/OSoleMio/03%20O%20Sole%20Mio.mp3',
+  'https://archive.org/download/ItalianCanzoneGoldenHits/34%20Volare%20-%20Napolitan%20Mandolis.mp3',
+  'https://archive.org/download/ItalianCanzoneGoldenHits/28%20Arriverderci%20Roma%20-%20Natalino%20Otto.mp3',
+  'https://archive.org/download/ItalianCanzoneGoldenHits/21%20Mambo%20Italiano%20-%20Alma%20Cogan.mp3',
 ];
 
 function getRandomSong(): string {
