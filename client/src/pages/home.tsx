@@ -1027,7 +1027,7 @@ export default function Home() {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground uppercase tracking-wide mb-1">Duration</p>
-                      <p className="font-serif text-2xl font-semibold text-foreground">6 Days</p>
+                      <p className="font-serif text-2xl font-semibold text-foreground">14 Days</p>
                       <p className="text-sm text-muted-foreground">of adventure</p>
                     </div>
                   </div>
