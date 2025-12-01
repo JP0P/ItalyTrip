@@ -139,8 +139,8 @@ export function ChatBox() {
 
   return (
     <div className="fixed bottom-4 right-4 z-50" data-testid="chat-box-expanded">
-      <Card className="w-80 sm:w-96 flex flex-col shadow-xl border-border/50 bg-background/80 backdrop-blur-md">
-        <div className="flex items-center justify-between gap-2 p-4 border-b border-border/50 bg-italy-green/10">
+      <Card className="w-80 sm:w-96 flex flex-col shadow-xl border-border">
+        <div className="flex items-center justify-between gap-2 p-4 border-b border-border bg-italy-green/5">
           <div className="flex items-center gap-2">
             <img src={gelatoIcon} alt="" className="h-6 w-6 object-contain" />
             <h3 className="font-semibold text-foreground">Trip Chat</h3>
@@ -199,7 +199,7 @@ export function ChatBox() {
           </div>
         </ScrollArea>
 
-        <div className="p-4 border-t border-border/50">
+        <div className="p-4 border-t border-border">
           {showNicknamePrompt ? (
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
