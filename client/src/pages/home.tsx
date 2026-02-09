@@ -6,7 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { 
   Plane, MapPin, Coffee, UtensilsCrossed, Camera, Wine, Sun, Heart, Sparkles,
   ChevronDown, ChevronUp, CheckSquare, Volume2, VolumeX, Share2, Copy, Check,
-  Building, Landmark, Ship, Mountain, Church, Music
+  Building, Landmark, Ship, Mountain, Church, Music, Download
 } from "lucide-react";
 import heroImage from "@assets/generated_images/amalfi_coast_sunset_view.png";
 
@@ -1077,6 +1077,19 @@ export default function Home() {
                 onToggle={() => toggleLocation(group.location)}
               />
             ))}
+          </div>
+
+          <div className="flex justify-center mt-8">
+            <Button
+              variant="outline"
+              asChild
+              data-testid="button-download-itinerary"
+            >
+              <a href="/italy-itinerary.pdf" download="Italy_Itinerary.pdf">
+                <Download className="w-4 h-4 mr-2" />
+                Download Full Itinerary (PDF)
+              </a>
+            </Button>
           </div>
         </div>
       </section>
