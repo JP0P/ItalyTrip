@@ -44,33 +44,33 @@ interface LocationGroup {
 const locationInfoMap: Record<string, LocationInfo> = {
   "Rome": {
     vibe: "Ancient grandeur meets vibrant nightlife",
-    knownFor: "Colosseum, Vatican, pasta alla carbonara",
-    mustDo: "Toss a coin in the Trevi Fountain at sunrise"
+    knownFor: "Vatican, Colosseum, Trastevere dining",
+    mustDo: "Guided Vatican Museums & Sistine Chapel morning tour"
   },
   "Amalfi Coast": {
     vibe: "Dramatic cliffs, la dolce vita glamour",
-    knownFor: "Positano views, limoncello, Path of the Gods",
-    mustDo: "Sunset aperitivo overlooking the Mediterranean"
-  },
-  "Tuscany": {
-    vibe: "Rolling hills, unhurried village life",
-    knownFor: "Chianti wine, truffle hunting, Renaissance art",
-    mustDo: "Wine tasting at a family vineyard"
-  },
-  "Cinque Terre": {
-    vibe: "Colorful fishing villages, coastal romance",
-    knownFor: "Five UNESCO villages, fresh pesto, hiking trails",
-    mustDo: "Watch sunset from Manarola with local wine"
+    knownFor: "Capri, cooking classes, coastal ferry-hopping",
+    mustDo: "Day trip to Capri by ferry"
   },
   "Florence": {
     vibe: "Renaissance elegance, art at every turn",
-    knownFor: "Michelangelo's David, Duomo, bistecca Fiorentina",
+    knownFor: "Duomo, Uffizi or Accademia, Oltrarno charm",
     mustDo: "Sunset at Piazzale Michelangelo"
+  },
+  "Tuscany": {
+    vibe: "Rolling hills, unhurried village life",
+    knownFor: "Val d'Orcia, Vespa rides, hot air balloons",
+    mustDo: "Vespa day through Pienza & Montepulciano"
+  },
+  "Cinque Terre": {
+    vibe: "Colorful fishing villages, coastal romance",
+    knownFor: "Five UNESCO villages, hiking trails, sunsets",
+    mustDo: "Watch sunset from Manarola with local wine"
   },
   "Venice": {
     vibe: "Floating fairytale, romantic labyrinth",
     knownFor: "Grand Canal, gondolas, cicchetti & Prosecco",
-    mustDo: "Gondola ride through hidden canals at dusk"
+    mustDo: "8:20pm gondola ride through the canals"
   }
 };
 
@@ -480,10 +480,9 @@ const itinerary: ItineraryDay[] = [
     location: "Rome",
     title: "The Eternal City - Arrival",
     activities: [
-      "Arrive at Rome Fiumicino Airport",
-      "Check into hotel in the historic center",
-      "Evening stroll through Piazza Navona",
-      "Dinner at a traditional trattoria in Trastevere"
+      "Arrive in Rome",
+      "Check into hotel in Trastevere or near Pantheon",
+      "Evening stroll and dinner in Trastevere"
     ],
     icon: Landmark
   },
@@ -491,13 +490,11 @@ const itinerary: ItineraryDay[] = [
     day: 2,
     date: "May 14",
     location: "Rome",
-    title: "Ancient Wonders",
+    title: "Vatican & Ancient Rome",
     activities: [
-      "Skip-the-line tour of the Colosseum",
-      "Explore the Roman Forum and Palatine Hill",
-      "Lunch near Campo de' Fiori market",
-      "Toss a coin in the Trevi Fountain",
-      "Sunset at Pincian Hill overlooking the city"
+      "Morning: Guided Vatican Museums, Sistine Chapel & St. Peter's Basilica",
+      "Afternoon: Colosseum & Forum or Capitoline Hill",
+      "Evening in Trastevere"
     ],
     icon: Building
   },
@@ -507,11 +504,10 @@ const itinerary: ItineraryDay[] = [
     location: "Amalfi Coast",
     title: "Coastal Paradise - Arrival",
     activities: [
-      "Travel to Naples via high-speed train",
-      "Drive scenic route to Positano",
-      "Check into cliffside hotel",
-      "Beach time at Spiaggia Grande",
-      "Sunset aperitivo overlooking the sea"
+      "Train: Roma Termini 10:20 \u2192 Napoli Centrale 11:33 (Frecciarossa 8335)",
+      "Transfer to Amalfi town or Ravello",
+      "Settle in and explore the area",
+      "Evening along the coast"
     ],
     icon: Mountain
   },
@@ -519,13 +515,11 @@ const itinerary: ItineraryDay[] = [
     day: 4,
     date: "May 16",
     location: "Amalfi Coast",
-    title: "Amalfi Coast Exploration",
+    title: "Capri Day Trip",
     activities: [
-      "Boat trip to Emerald Grotto",
-      "Visit charming Amalfi town",
-      "Hiking along Sentiero Degli Dei (Path of Gods)",
-      "Fresh seafood lunch with sea views",
-      "Evening passeggiata through village"
+      "Ferry to Capri for a full day trip",
+      "Explore the island, Blue Grotto & Gardens of Augustus",
+      "Ferry back to Amalfi in the evening"
     ],
     icon: Ship
   },
@@ -533,127 +527,115 @@ const itinerary: ItineraryDay[] = [
     day: 5,
     date: "May 17",
     location: "Amalfi Coast",
-    title: "Amalfi Coast Relaxation",
+    title: "Cooking & Coastal Towns",
     activities: [
-      "Leisurely beach morning",
-      "Explore Praiano nearby",
-      "Limoncello and local crafts",
-      "Sunset beach meditation",
-      "Dinner at local family trattoria"
+      "Half-day cooking class in Amalfi",
+      "Afternoon ferry-hopping to nearby coastal towns",
+      "Evening passeggiata and seafood dinner"
     ],
     icon: Sun
   },
   {
     day: 6,
     date: "May 18",
-    location: "Tuscany",
-    title: "Wine Country - Arrival",
+    location: "Amalfi Coast",
+    title: "Rest & Relaxation",
     activities: [
-      "Drive to Tuscany countryside",
-      "Check into agriturismo",
-      "Welcome wine tasting",
-      "Sunset over rolling vineyards",
-      "Dinner with local wine pairings"
+      "Rest day \u2014 sleep in, beach time, or a leisurely walk",
+      "Explore at your own pace",
+      "Relaxed evening dinner on the coast"
     ],
-    icon: Wine
+    icon: Sun
   },
   {
     day: 7,
     date: "May 19",
-    location: "Tuscany",
-    title: "Chianti Wine Region",
+    location: "Florence",
+    title: "Renaissance Heart - Arrival",
     activities: [
-      "Day trip through Chianti vineyards",
-      "Wine tasting at family vineyard",
-      "Visit medieval San Gimignano",
-      "Traditional Tuscan lunch",
-      "Market visit in Siena"
+      "Train: Napoli Centrale 12:10 \u2192 Firenze SMN 15:11 (Frecciarossa 9422)",
+      "Check into hotel near Duomo, Santa Croce, or Oltrarno",
+      "Evening walk and dinner in the historic center"
     ],
-    icon: Wine
+    icon: Church
   },
   {
     day: 8,
     date: "May 20",
-    location: "Tuscany",
-    title: "Tuscan Villages & Culture",
+    location: "Florence",
+    title: "Art & Sunset Views",
     activities: [
-      "Explore Monteriggioni medieval walls",
-      "Cooking class with local chef",
-      "Learn traditional pasta making",
-      "Lunch with your creations",
-      "Evening stroll through Val d'Orcia"
+      "Duomo exterior visit",
+      "ONE museum: Accademia (David) or Uffizi Gallery",
+      "Sunset at Piazzale Michelangelo",
+      "Dinner in Oltrarno"
     ],
-    icon: Building
+    icon: Landmark
   },
   {
     day: 9,
     date: "May 21",
     location: "Tuscany",
-    title: "Hidden Gems of Tuscany",
+    title: "Val d'Orcia - Arrival",
     activities: [
-      "Visit Pienza - Renaissance village",
-      "Pecorino cheese tasting",
-      "Thermal springs at Bagno Vignoni",
-      "Sunrise hot air balloon ride (optional)",
-      "Farewell Tuscan dinner"
+      "Pick up rental car and drive to Val d'Orcia",
+      "Check into agriturismo near Pienza or Montepulciano",
+      "Explore the area and settle in",
+      "Dinner with local wine pairings"
     ],
-    icon: Landmark
+    icon: Wine
   },
   {
     day: 10,
     date: "May 22",
-    location: "Cinque Terre",
-    title: "Villages of the Coast - Arrival",
+    location: "Tuscany",
+    title: "Vespa Day",
     activities: [
-      "Travel to Cinque Terre",
-      "Check into Vernazza or Monterosso",
-      "Explore colorful fishing villages",
-      "Swimming in crystal waters",
-      "Fresh pasta with local seafood"
+      "Full-day Vespa ride through Pienza & Montepulciano",
+      "Winery lunch with tastings",
+      "Explore charming hill towns",
+      "Evening stroll through Val d'Orcia"
     ],
-    icon: Ship
+    icon: Wine
   },
   {
     day: 11,
     date: "May 23",
-    location: "Cinque Terre",
-    title: "Hiking & Villages",
+    location: "Tuscany",
+    title: "Balloon Ride & Hill Towns",
     activities: [
-      "Hike scenic Cinque Terre trails",
-      "Visit all 5 villages by boat & foot",
-      "Pesto making workshop",
-      "Sunset from cliff viewpoint",
-      "Wine tasting with anchovies"
+      "Sunrise hot air balloon ride (weather permitting)",
+      "Visit more hill towns at your own pace",
+      "Winery lunch",
+      "Farewell Tuscan dinner"
     ],
-    icon: Mountain
+    icon: Sun
   },
   {
     day: 12,
     date: "May 24",
-    location: "Florence",
-    title: "Renaissance Heart - Arrival",
+    location: "Cinque Terre",
+    title: "Villages of the Coast - Arrival",
     activities: [
-      "Train to Florence",
-      "Check into hotel in historic center",
-      "Walk Ponte Vecchio at sunset",
-      "Gelato in Piazza della Signoria",
-      "Evening wine in Oltrarno"
+      "Drive Val d'Orcia \u2192 Pisa Airport (2.5\u20133 hrs), return rental car",
+      "Train: Pisa Airport \u2192 La Spezia Centrale (~1 hr), then local train to village",
+      "Check into Vernazza or Monterosso al Mare",
+      "Evening exploring the village"
     ],
-    icon: Church
+    icon: Ship
   },
   {
     day: 13,
     date: "May 25",
-    location: "Florence",
-    title: "Art & Culture",
+    location: "Cinque Terre",
+    title: "Village Hopping & Sunset",
     activities: [
-      "Skip-the-line Uffizi Gallery tour",
-      "Visit Accademia to see David",
-      "Climb Duomo for city views",
-      "Leather workshop visit",
-      "Farewell dinner in Florence"
+      "Village hopping by train through the five towns",
+      "Relaxed coastal morning and beach time",
+      "Sunset in Manarola",
+      "Fresh seafood dinner"
     ],
-    icon: Landmark
+    icon: Mountain
   },
   {
     day: 14,
@@ -661,11 +643,22 @@ const itinerary: ItineraryDay[] = [
     location: "Venice",
     title: "City of Canals - Finale",
     activities: [
-      "High-speed train to Venice",
-      "Water taxi to hotel on Grand Canal",
-      "St. Mark's Basilica & Doge's Palace",
-      "Gondola ride at sunset",
+      "Travel to Venice",
+      "Check into hotel in Dorsoduro or Cannaregio",
+      "Cicchetti crawl and evening canal wandering",
+      "8:20pm gondola ride (booked)",
       "Final Italian dinner with Prosecco"
+    ],
+    icon: Ship
+  },
+  {
+    day: 15,
+    date: "May 27",
+    location: "Venice",
+    title: "Departure Day",
+    activities: [
+      "Last morning in Venice",
+      "Departure"
     ],
     icon: Ship
   }
@@ -933,7 +926,7 @@ export default function Home() {
     }
   ];
 
-  const destinations = ["Rome", "Florence", "Venice", "Amalfi Coast", "Tuscany"];
+  const destinations = ["Rome", "Amalfi Coast", "Florence", "Tuscany", "Cinque Terre", "Venice"];
 
   return (
     <div className="min-h-screen bg-background">
