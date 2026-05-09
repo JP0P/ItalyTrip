@@ -6,9 +6,10 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { 
   Plane, MapPin, Coffee, UtensilsCrossed, Camera, Wine, Sun, Heart, Sparkles,
   ChevronDown, ChevronUp, CheckSquare, Volume2, VolumeX, Share2, Copy, Check,
-  Building, Landmark, Ship, Mountain, Church, Music, Download
+  Building, Landmark, Ship, Mountain, Church, Music, Download, ExternalLink
 } from "lucide-react";
 import heroImage from "@assets/generated_images/amalfi_coast_sunset_view.png";
+import { SpotlightSection } from "@/components/spotlight-section";
 
 interface TimeLeft {
   days: number;
@@ -31,6 +32,9 @@ interface LocationInfo {
   vibe: string;
   knownFor: string;
   mustDo: string;
+  airbnbUrl?: string;
+  stayUrl?: string;
+  stayLabel?: string;
 }
 
 interface LocationGroup {
@@ -45,32 +49,40 @@ const locationInfoMap: Record<string, LocationInfo> = {
   "Rome": {
     vibe: "Ancient grandeur meets vibrant nightlife",
     knownFor: "Vatican, Colosseum, Trastevere dining",
-    mustDo: "Guided Vatican Museums & Sistine Chapel morning tour"
+    mustDo: "Guided Vatican Museums & Sistine Chapel morning tour",
+    stayUrl: "https://www.lighthousesuites.it/home/?lang=en",
+    stayLabel: "Lighthouse Suites"
   },
   "Amalfi Coast": {
     vibe: "Dramatic cliffs, la dolce vita glamour",
     knownFor: "Capri, cooking classes, coastal ferry-hopping",
-    mustDo: "Day trip to Capri by ferry"
+    mustDo: "Day trip to Capri by ferry",
+    airbnbUrl: "https://www.airbnb.com/rooms/19043527"
   },
   "Florence": {
     vibe: "Renaissance elegance, art at every turn",
     knownFor: "Duomo, Uffizi or Accademia, Oltrarno charm",
-    mustDo: "Sunset at Piazzale Michelangelo"
+    mustDo: "Sunset at Piazzale Michelangelo",
+    airbnbUrl: "https://www.airbnb.com/rooms/1608846507435251574"
   },
   "Tuscany": {
     vibe: "Rolling hills, unhurried village life",
     knownFor: "Val d'Orcia, Vespa rides, hot air balloons",
-    mustDo: "Vespa day through Pienza & Montepulciano"
+    mustDo: "Vespa day through Pienza & Montepulciano",
+    airbnbUrl: "https://www.airbnb.com/rooms/1383309944460623346"
   },
   "Cinque Terre": {
     vibe: "Colorful fishing villages, coastal romance",
     knownFor: "Five UNESCO villages, hiking trails, sunsets",
-    mustDo: "Watch sunset from Manarola with local wine"
+    mustDo: "Watch sunset from Manarola with local wine",
+    airbnbUrl: "https://www.airbnb.com/rooms/6278924"
   },
   "Venice": {
     vibe: "Floating fairytale, romantic labyrinth",
     knownFor: "Grand Canal, gondolas, cicchetti & Prosecco",
-    mustDo: "8:20pm gondola ride through the canals"
+    mustDo: "8:20pm gondola ride through the canals",
+    stayUrl: "https://www.hotelcanalgrande.it/",
+    stayLabel: "Hotel Canal Grande"
   }
 };
 
@@ -210,7 +222,21 @@ function LocationCard({ group, isExpanded, onToggle }: { group: LocationGroup; i
             </div>
             <div>
               <h3 className="font-serif text-xl font-semibold text-foreground">{group.location}</h3>
-              <p className="text-sm text-muted-foreground">{group.dateRange} ({dayLabel})</p>
+              <div className="flex items-center gap-3 flex-wrap">
+                <p className="text-sm text-muted-foreground">{group.dateRange} ({dayLabel})</p>
+                {(group.info.airbnbUrl || group.info.stayUrl) && (
+                  <a
+                    href={group.info.stayUrl || group.info.airbnbUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-1 text-xs text-italy-red hover:underline font-medium"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    {group.info.stayLabel || "Airbnb"}
+                  </a>
+                )}
+              </div>
             </div>
           </div>
           <Button size="icon" variant="ghost" className="flex-shrink-0">
@@ -1052,6 +1078,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Spotlight Section */}
+      <SpotlightSection />
 
       {/* Trip Itinerary Section */}
       <section className="py-16 lg:py-24 px-4 bg-card/50">
