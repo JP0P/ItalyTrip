@@ -3,13 +3,15 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { 
+import {
   Plane, MapPin, Coffee, UtensilsCrossed, Camera, Wine, Sun, Heart, Sparkles,
   ChevronDown, ChevronUp, CheckSquare, Volume2, VolumeX, Share2, Copy, Check,
   Building, Landmark, Ship, Mountain, Church, Music, Download, ExternalLink
 } from "lucide-react";
 import heroImage from "@assets/generated_images/amalfi_coast_sunset_view.png";
 import { SpotlightSection } from "@/components/spotlight-section";
+import { NowMode } from "@/components/now-mode";
+import { useTripPhase } from "@/hooks/use-trip-phase";
 
 interface TimeLeft {
   days: number;
@@ -22,6 +24,7 @@ interface TimeLeft {
 interface ItineraryDay {
   day: number;
   date: string;
+  isoDate: string;
   location: string;
   title: string;
   activities: string[];
@@ -503,6 +506,7 @@ const itinerary: ItineraryDay[] = [
   {
     day: 1,
     date: "May 13",
+    isoDate: "2026-05-13",
     location: "Rome",
     title: "The Eternal City - Arrival",
     activities: [
@@ -515,22 +519,25 @@ const itinerary: ItineraryDay[] = [
   {
     day: 2,
     date: "May 14",
+    isoDate: "2026-05-14",
     location: "Rome",
-    title: "Vatican & Ancient Rome",
+    title: "Only Full Rome Day",
     activities: [
-      "Morning: Guided Vatican Museums, Sistine Chapel & St. Peter's Basilica",
-      "Afternoon: Colosseum & Forum or Capitoline Hill",
-      "Evening in Trastevere"
+      "Morning: Pantheon — arrive early, beat the crowds ☕",
+      "Midday: Colosseum & Roman Forum — ancient Rome mode activated 🏛️",
+      "Backup option: Vatican Museums / Sistine Chapel / St. Peter's",
+      "Evening: Trastevere — wander, eat everything, no plan needed 🍝"
     ],
     icon: Building
   },
   {
     day: 3,
     date: "May 15",
+    isoDate: "2026-05-15",
     location: "Amalfi Coast",
     title: "Coastal Paradise - Arrival",
     activities: [
-      "Train: Roma Termini 10:20 \u2192 Napoli Centrale 11:33 (Frecciarossa 8335)",
+      "Train: Roma Termini 10:20 → Napoli Centrale 11:33 (Frecciarossa 8335)",
       "Transfer to Amalfi town or Ravello",
       "Settle in and explore the area",
       "Evening along the coast"
@@ -540,6 +547,7 @@ const itinerary: ItineraryDay[] = [
   {
     day: 4,
     date: "May 16",
+    isoDate: "2026-05-16",
     location: "Amalfi Coast",
     title: "Capri Day Trip",
     activities: [
@@ -552,6 +560,7 @@ const itinerary: ItineraryDay[] = [
   {
     day: 5,
     date: "May 17",
+    isoDate: "2026-05-17",
     location: "Amalfi Coast",
     title: "Cooking & Coastal Towns",
     activities: [
@@ -564,10 +573,11 @@ const itinerary: ItineraryDay[] = [
   {
     day: 6,
     date: "May 18",
+    isoDate: "2026-05-18",
     location: "Amalfi Coast",
     title: "Rest & Relaxation",
     activities: [
-      "Rest day \u2014 sleep in, beach time, or a leisurely walk",
+      "Rest day — sleep in, beach time, or a leisurely walk",
       "Explore at your own pace",
       "Relaxed evening dinner on the coast"
     ],
@@ -576,10 +586,11 @@ const itinerary: ItineraryDay[] = [
   {
     day: 7,
     date: "May 19",
+    isoDate: "2026-05-19",
     location: "Florence",
     title: "Renaissance Heart - Arrival",
     activities: [
-      "Train: Napoli Centrale 12:10 \u2192 Firenze SMN 15:11 (Frecciarossa 9422)",
+      "Train: Napoli Centrale 12:10 → Firenze SMN 15:11 (Frecciarossa 9422)",
       "Check into hotel near Duomo, Santa Croce, or Oltrarno",
       "Evening walk and dinner in the historic center"
     ],
@@ -588,6 +599,7 @@ const itinerary: ItineraryDay[] = [
   {
     day: 8,
     date: "May 20",
+    isoDate: "2026-05-20",
     location: "Florence",
     title: "Art & Sunset Views",
     activities: [
@@ -601,6 +613,7 @@ const itinerary: ItineraryDay[] = [
   {
     day: 9,
     date: "May 21",
+    isoDate: "2026-05-21",
     location: "Tuscany",
     title: "Val d'Orcia - Arrival",
     activities: [
@@ -614,6 +627,7 @@ const itinerary: ItineraryDay[] = [
   {
     day: 10,
     date: "May 22",
+    isoDate: "2026-05-22",
     location: "Tuscany",
     title: "Vespa Day",
     activities: [
@@ -627,6 +641,7 @@ const itinerary: ItineraryDay[] = [
   {
     day: 11,
     date: "May 23",
+    isoDate: "2026-05-23",
     location: "Tuscany",
     title: "Balloon Ride & Hill Towns",
     activities: [
@@ -640,11 +655,12 @@ const itinerary: ItineraryDay[] = [
   {
     day: 12,
     date: "May 24",
+    isoDate: "2026-05-24",
     location: "Cinque Terre",
     title: "Villages of the Coast - Arrival",
     activities: [
-      "Drive Val d'Orcia \u2192 Pisa Airport (2.5\u20133 hrs), return rental car",
-      "Train: Pisa Airport \u2192 La Spezia Centrale (~1 hr), then local train to village",
+      "Drive Val d'Orcia → Pisa Airport (2.5–3 hrs), return rental car",
+      "Train: Pisa Airport → La Spezia Centrale (~1 hr), then local train to village",
       "Check into Vernazza or Monterosso al Mare",
       "Evening exploring the village"
     ],
@@ -653,6 +669,7 @@ const itinerary: ItineraryDay[] = [
   {
     day: 13,
     date: "May 25",
+    isoDate: "2026-05-25",
     location: "Cinque Terre",
     title: "Village Hopping & Sunset",
     activities: [
@@ -666,6 +683,7 @@ const itinerary: ItineraryDay[] = [
   {
     day: 14,
     date: "May 26",
+    isoDate: "2026-05-26",
     location: "Venice",
     title: "City of Canals - Finale",
     activities: [
@@ -680,6 +698,7 @@ const itinerary: ItineraryDay[] = [
   {
     day: 15,
     date: "May 27",
+    isoDate: "2026-05-27",
     location: "Venice",
     title: "Departure Day",
     activities: [
@@ -794,6 +813,7 @@ export default function Home() {
   const targetDateString = targetDate.toISOString().split('T')[0];
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [currentSong] = useState<string>(() => getRandomSong());
+  const tripPhase = useTripPhase(itinerary);
   
   const calculateTimeLeft = useCallback((): TimeLeft => {
     const now = new Date();
@@ -928,6 +948,7 @@ export default function Home() {
   }, []);
 
   const isCountdownComplete = timeLeft.total <= 0;
+  const [showPreTripDetails, setShowPreTripDetails] = useState(tripPhase.phase !== 'active');
 
   const highlights = [
     {
@@ -959,7 +980,7 @@ export default function Home() {
       {showConfetti && <Confetti />}
       
       {/* Hero Section */}
-      <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+      <section className={`relative ${tripPhase.phase === 'active' ? 'min-h-[40vh]' : 'h-[85vh] min-h-[600px]'} flex items-center justify-center overflow-hidden`}>
         {/* Background Image */}
         <div className="absolute inset-0">
           <img 
@@ -1018,66 +1039,88 @@ export default function Home() {
         <FloatingIcon icon={Heart} className="top-[40%] left-[5%] animate-float-delayed opacity-30" delay="0.3s" />
         <FloatingIcon icon={Sparkles} className="top-[20%] right-[25%] animate-float opacity-30" delay="0.8s" />
 
-        {/* Content */}
-        <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-          <div className="w-32 mx-auto mb-6">
-            <ItalianFlagStripe />
-          </div>
-
-          <p className="text-white/80 uppercase tracking-[0.3em] text-sm mb-4 text-shadow">
-            The adventure begins
-          </p>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6 text-shadow-lg leading-tight">
-            {isCountdownComplete ? (
-              <>
-                <span className="block">Buon Viaggio!</span>
-                <span className="block text-2xl sm:text-3xl lg:text-4xl mt-4 font-normal">
-                  The wait is over!
-                </span>
-              </>
-            ) : (
-              <>
-                <span className="block">Italy Awaits</span>
-                <span className="block text-2xl sm:text-3xl lg:text-4xl mt-4 font-normal italic">
-                  Andiamo!
-                </span>
-              </>
-            )}
-          </h1>
-
-          {!isCountdownComplete && (
-            <div 
-              className="flex flex-col items-center gap-6 sm:gap-8 mt-10"
-              role="timer"
-              aria-live="polite"
-              data-testid="countdown-timer"
-            >
-              {/* Days - Large & Prominent */}
-              <CountdownUnit value={timeLeft.days} label="Days" prevValue={prevTimeLeft.days} size="large" />
-              
-              {/* Hours, Minutes, Seconds Row */}
-              <div className="flex items-start justify-center gap-3 sm:gap-4">
-                <CountdownUnit value={timeLeft.hours} label="Hours" prevValue={prevTimeLeft.hours} />
-                <TimeSeparator />
-                <CountdownUnit value={timeLeft.minutes} label="Minutes" prevValue={prevTimeLeft.minutes} />
-                <TimeSeparator />
-                <CountdownUnit value={timeLeft.seconds} label="Seconds" prevValue={prevTimeLeft.seconds} />
-              </div>
+        {/* Content — countdown hero (pretrip/posttrip) or NowMode active banner */}
+        {tripPhase.phase === 'active' && tripPhase.todayEntry !== null ? (
+          <div className="relative z-10 w-full py-6 sm:py-8 flex items-center justify-center">
+            <div className="text-center px-4">
+              <p className="text-white/90 uppercase tracking-[0.25em] text-xs sm:text-sm font-semibold text-shadow">
+                🇮🇹 Live from Italy · Day {tripPhase.dayNumber} of {itinerary.length}
+              </p>
             </div>
-          )}
-
-          <p className="mt-10 text-white/70 text-lg sm:text-xl font-medium text-shadow" data-testid="text-target-date">
-            {targetDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-          </p>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center pt-2">
-            <div className="w-1.5 h-3 bg-white/60 rounded-full" />
           </div>
-        </div>
+        ) : (
+          <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div className="w-32 mx-auto mb-6">
+              <ItalianFlagStripe />
+            </div>
+
+            <p className="text-white/80 uppercase tracking-[0.3em] text-sm mb-4 text-shadow">
+              The adventure begins
+            </p>
+            <h1 className="font-serif text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6 text-shadow-lg leading-tight">
+              {isCountdownComplete ? (
+                <>
+                  <span className="block">Buon Viaggio!</span>
+                  <span className="block text-2xl sm:text-3xl lg:text-4xl mt-4 font-normal">
+                    The wait is over!
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="block">Italy Awaits</span>
+                  <span className="block text-2xl sm:text-3xl lg:text-4xl mt-4 font-normal italic">
+                    Andiamo!
+                  </span>
+                </>
+              )}
+            </h1>
+
+            {!isCountdownComplete && (
+              <div
+                className="flex flex-col items-center gap-6 sm:gap-8 mt-10"
+                role="timer"
+                aria-live="polite"
+                data-testid="countdown-timer"
+              >
+                {/* Days - Large & Prominent */}
+                <CountdownUnit value={timeLeft.days} label="Days" prevValue={prevTimeLeft.days} size="large" />
+
+                {/* Hours, Minutes, Seconds Row */}
+                <div className="flex items-start justify-center gap-3 sm:gap-4">
+                  <CountdownUnit value={timeLeft.hours} label="Hours" prevValue={prevTimeLeft.hours} />
+                  <TimeSeparator />
+                  <CountdownUnit value={timeLeft.minutes} label="Minutes" prevValue={prevTimeLeft.minutes} />
+                  <TimeSeparator />
+                  <CountdownUnit value={timeLeft.seconds} label="Seconds" prevValue={prevTimeLeft.seconds} />
+                </div>
+              </div>
+            )}
+
+            <p className="mt-10 text-white/70 text-lg sm:text-xl font-medium text-shadow" data-testid="text-target-date">
+              {targetDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            </p>
+          </div>
+        )}
+
+        {/* Scroll indicator — only shown in pretrip/posttrip */}
+        {tripPhase.phase !== 'active' && (
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center pt-2">
+              <div className="w-1.5 h-3 bg-white/60 rounded-full" />
+            </div>
+          </div>
+        )}
       </section>
+
+      {/* NOW Mode — renders below hero when trip is active */}
+      {tripPhase.phase === 'active' && tripPhase.todayEntry !== null && (
+        <NowMode
+          todayEntry={tripPhase.todayEntry}
+          dayNumber={tripPhase.dayNumber!}
+          totalDays={itinerary.length}
+          locationInfoMap={locationInfoMap}
+        />
+      )}
 
       {/* Spotlight Section */}
       <SpotlightSection />
@@ -1123,78 +1166,94 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trip Details Section */}
-      <section className="py-16 lg:py-24 px-4">
+      {/* Trip Details Section — collapsed for active phase, full for pretrip/posttrip */}
+      <section className="py-8 lg:py-12 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 lg:mb-16">
-            <div className="w-24 mx-auto mb-6">
-              <ItalianFlagStripe />
+          {tripPhase.phase === 'active' && (
+            <div className="text-center mb-4">
+              <button
+                onClick={() => setShowPreTripDetails(v => !v)}
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2 rounded-lg border border-border hover:bg-muted/50"
+              >
+                {showPreTripDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                Trip Planning Archive
+              </button>
             </div>
-            <h2 className="font-serif text-3xl lg:text-4xl font-semibold text-foreground mb-4">
-              Why Italy?
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-              From ancient ruins to Renaissance masterpieces, from coastal beauty to culinary excellence — 
-              Italy offers an experience like no other.
-            </p>
-          </div>
+          )}
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            <div className="space-y-4">
-              {highlights.map((highlight, index) => (
-                <HighlightCard 
-                  key={index}
-                  icon={highlight.icon}
-                  title={highlight.title}
-                  description={highlight.description}
-                />
-              ))}
-            </div>
-
-            <div>
-              <Card className="p-6 lg:p-8 h-full">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 rounded-xl bg-italy-red/10">
-                    <MapPin className="w-5 h-5 text-italy-red" />
-                  </div>
-                  <h3 className="font-serif text-xl font-semibold text-foreground">Journey Snapshot</h3>
+          {showPreTripDetails && (
+            <>
+              <div className="text-center mb-12 lg:mb-16">
+                <div className="w-24 mx-auto mb-6">
+                  <ItalianFlagStripe />
                 </div>
-                
-                <div className="space-y-6">
-                  <div>
-                    <p className="text-sm text-muted-foreground uppercase tracking-wide mb-3">Destinations</p>
-                    <div className="flex flex-wrap gap-2">
-                      {destinations.map((dest) => (
-                        <DestinationBadge key={dest} name={dest} />
-                      ))}
-                    </div>
-                  </div>
+                <h2 className="font-serif text-3xl lg:text-4xl font-semibold text-foreground mb-4">
+                  Why Italy?
+                </h2>
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+                  From ancient ruins to Renaissance masterpieces, from coastal beauty to culinary excellence —
+                  Italy offers an experience like no other.
+                </p>
+              </div>
 
-                  <div className="border-t border-border" />
-
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <p className="text-sm text-muted-foreground uppercase tracking-wide mb-1">Departure</p>
-                      <p className="font-serif text-2xl font-semibold text-foreground">{targetDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
-                      <p className="text-sm text-muted-foreground">{targetDate.getFullYear()}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground uppercase tracking-wide mb-1">Duration</p>
-                      <p className="font-serif text-2xl font-semibold text-foreground">14 Days</p>
-                      <p className="text-sm text-muted-foreground">of adventure</p>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-border" />
-
-                  <div className="text-center py-4">
-                    <p className="font-serif text-2xl italic text-foreground mb-2">"Viaggiare è vivere"</p>
-                    <p className="text-sm text-muted-foreground">To travel is to live</p>
-                  </div>
+              <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+                <div className="space-y-4">
+                  {highlights.map((highlight, index) => (
+                    <HighlightCard
+                      key={index}
+                      icon={highlight.icon}
+                      title={highlight.title}
+                      description={highlight.description}
+                    />
+                  ))}
                 </div>
-              </Card>
-            </div>
-          </div>
+
+                <div>
+                  <Card className="p-6 lg:p-8 h-full">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-2 rounded-xl bg-italy-red/10">
+                        <MapPin className="w-5 h-5 text-italy-red" />
+                      </div>
+                      <h3 className="font-serif text-xl font-semibold text-foreground">Journey Snapshot</h3>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div>
+                        <p className="text-sm text-muted-foreground uppercase tracking-wide mb-3">Destinations</p>
+                        <div className="flex flex-wrap gap-2">
+                          {destinations.map((dest) => (
+                            <DestinationBadge key={dest} name={dest} />
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="border-t border-border" />
+
+                      <div className="grid grid-cols-2 gap-6">
+                        <div>
+                          <p className="text-sm text-muted-foreground uppercase tracking-wide mb-1">Departure</p>
+                          <p className="font-serif text-2xl font-semibold text-foreground">{targetDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                          <p className="text-sm text-muted-foreground">{targetDate.getFullYear()}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground uppercase tracking-wide mb-1">Duration</p>
+                          <p className="font-serif text-2xl font-semibold text-foreground">14 Days</p>
+                          <p className="text-sm text-muted-foreground">of adventure</p>
+                        </div>
+                      </div>
+
+                      <div className="border-t border-border" />
+
+                      <div className="text-center py-4">
+                        <p className="font-serif text-2xl italic text-foreground mb-2">"Viaggiare è vivere"</p>
+                        <p className="text-sm text-muted-foreground">To travel is to live</p>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
