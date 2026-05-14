@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { ExternalLink, MapPin } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { DailyBit } from "@/data/daily-bits";
@@ -16,9 +17,10 @@ interface TodayCardProps {
   dayNumber: number;
   totalDays: number;
   bit: DailyBit | null;
+  checkInSlot?: ReactNode;
 }
 
-export function TodayCard({ entry, dayNumber, totalDays, bit }: TodayCardProps) {
+export function TodayCard({ entry, dayNumber, totalDays, bit, checkInSlot }: TodayCardProps) {
   const headline = bit?.headlineOverride ?? entry.title;
   const urgencyLine = bit?.urgencyLine ?? null;
 
@@ -61,6 +63,12 @@ export function TodayCard({ entry, dayNumber, totalDays, bit }: TodayCardProps) 
             </p>
           )}
         </div>
+
+        {checkInSlot && (
+          <div className="mb-4">
+            {checkInSlot}
+          </div>
+        )}
 
         {/* Flexible suggestions */}
         {bit?.suggestionSections?.length ? (
