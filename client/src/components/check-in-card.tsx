@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { MapPin, CheckCircle2, Send, LocateFixed, AlertCircle } from "lucide-react";
 
@@ -35,6 +36,7 @@ function getDefaultCheckIns(location: string) {
 
 export function CheckInCard({ location, isoDate }: CheckInCardProps) {
   const [customPlace, setCustomPlace] = useState("");
+  const [checkInNote, setCheckInNote] = useState("");
   const [lastCheckIn, setLastCheckIn] = useState<string | null>(null);
   const [isLocating, setIsLocating] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
@@ -52,11 +54,17 @@ export function CheckInCard({ location, isoDate }: CheckInCardProps) {
       queryClient.invalidateQueries({ queryKey: ["/api/chat/messages"] });
       setLastCheckIn(message);
       setCustomPlace("");
+      setCheckInNote("");
     },
   });
 
+  const withOptionalNote = (message: string) => {
+    const note = checkInNote.trim();
+    return note ? `${message}\n📝 ${note}` : message;
+  };
+
   const sendCheckIn = (message: string) => {
-    const stampedMessage = `${message}\n📍 Trip check-in · ${isoDate}`;
+    const stampedMessage = `${withOptionalNote(message)}\n📍 Trip check-in · ${isoDate}`;
     checkInMutation.mutate(stampedMessage);
   };
 
@@ -132,6 +140,22 @@ export function CheckInCard({ location, isoDate }: CheckInCardProps) {
             {item.label}
           </Button>
         ))}
+      </div>
+
+      <div className="mb-3">
+        <Textarea
+          value={checkInNote}
+          onChange={(event) => setCheckInNote(event.target.value)}
+          placeholder="Optional note… line was fake scary, view was absurd, gelato was elite"
+          maxLength={180}
+          rows={3}
+          disabled={checkInMutation.isPending}
+          className="resize-none rounded-2xl bg-white/80 border-italy-green/20"
+          data-testid="textarea-check-in-note"
+        />
+        <p className="mt-1 text-[11px] text-muted-foreground text-right">
+          {checkInNote.length}/180
+        </p>
       </div>
 
       <Button
