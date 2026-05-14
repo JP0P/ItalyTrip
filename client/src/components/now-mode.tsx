@@ -48,13 +48,13 @@ export function NowMode({ todayEntry, dayNumber, totalDays, locationInfoMap }: N
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-4 px-4 py-6 sm:py-8">
+      <CheckInCard location={todayEntry.location} isoDate={todayEntry.isoDate} />
       <TodayCard
         entry={todayEntry}
         dayNumber={dayNumber}
         totalDays={totalDays}
         bit={bit}
       />
-      <CheckInCard location={todayEntry.location} isoDate={todayEntry.isoDate} />
       <BaseCampCard location={todayEntry.location} locationInfo={locationInfo} />
       {bit && <DailyBitCard bit={bit} />}
       <PhraseCheatsheet />
