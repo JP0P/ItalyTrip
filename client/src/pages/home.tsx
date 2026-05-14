@@ -1131,8 +1131,8 @@ export default function Home() {
         />
       )}
 
-      {/* Spotlight Section */}
-      <SpotlightSection />
+      {/* Spotlight stays above itinerary before/after the trip; active trip prioritizes practical itinerary context. */}
+      {tripPhase.phase !== 'active' && <SpotlightSection />}
 
       {/* Trip Itinerary Section */}
       <section className="py-16 lg:py-24 px-4 bg-card/50">
@@ -1174,6 +1174,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {tripPhase.phase === 'active' && <SpotlightSection />}
 
       {/* Trip Details Section — collapsed for active phase, full for pretrip/posttrip */}
       <section className="py-8 lg:py-12 px-4">
