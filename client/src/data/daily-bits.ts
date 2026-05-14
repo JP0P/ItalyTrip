@@ -8,11 +8,17 @@ export interface ExploreLink {
   label: string;
   url: string;
   note?: string;
+  imageUrl?: string;
+  imageAlt?: string;
 }
 
 export interface DailyBit {
   isoDate: string;
   headlineOverride?: string;
+  eyebrow?: string;
+  heroTitle?: string;
+  heroSubtitle?: string;
+  heroImageUrl?: string;
   urgencyLine: string;
   sideQuests: string[];
   chaosBonus?: string;
@@ -35,7 +41,11 @@ export const dailyBits: Record<string, DailyBit> = {
   },
   "2026-05-14": {
     isoDate: "2026-05-14",
-    headlineOverride: "Rome Choose-Your-Own-Chaos Board",
+    headlineOverride: "Rome Today",
+    eyebrow: "Only full Rome day",
+    heroTitle: "Rome, Unscripted",
+    heroSubtitle: "Pantheon, Colosseum, Trastevere, and whatever beautiful chaos wins the day.",
+    heroImageUrl: "/rome/rome-colosseum.jpg",
     urgencyLine:
       "Only full Rome day. No strict marching orders — pick the strongest combo and let Rome do Rome.",
     suggestionSections: [
@@ -90,11 +100,15 @@ export const dailyBits: Record<string, DailyBit> = {
         label: "Pantheon official site",
         url: "https://www.pantheonroma.com/home-eng/",
         note: "Tickets, hours, and dome lore",
+        imageUrl: "/rome/rome-pantheon.jpg",
+        imageAlt: "Pantheon exterior in Rome",
       },
       {
         label: "Colosseum official tickets/info",
         url: "https://colosseo.it/en/",
         note: "Official monument info + visit planning",
+        imageUrl: "/rome/rome-colosseum.jpg",
+        imageAlt: "Colosseum exterior in Rome",
       },
       {
         label: "Aventine Keyhole / Orange Garden map",

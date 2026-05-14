@@ -41,7 +41,7 @@ export function NowMode({ todayEntry, dayNumber, totalDays, locationInfoMap }: N
     ...baseLocationInfo,
     mustDo:
       todayEntry.isoDate === "2026-05-14"
-        ? "Pantheon + Colosseum mode, then Trastevere if everyone still has feet."
+        ? "Good flexible combo: Pantheon, Colosseum, then Trastevere if everyone still has feet."
         : baseLocationInfo.mustDo,
   };
 

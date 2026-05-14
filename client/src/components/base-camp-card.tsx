@@ -57,7 +57,7 @@ export function BaseCampCard({ location, locationInfo }: BaseCampCardProps) {
 
         <div className="mt-3 pt-3 border-t border-border">
           <p className="text-xs text-muted-foreground">
-            <span className="font-medium text-foreground">Must-do:</span>{" "}
+            <span className="font-medium text-foreground">Nearby idea:</span>{" "}
             {locationInfo.mustDo}
           </p>
         </div>

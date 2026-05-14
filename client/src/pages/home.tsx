@@ -11,6 +11,7 @@ import {
 import heroImage from "@assets/generated_images/amalfi_coast_sunset_view.png";
 import { SpotlightSection } from "@/components/spotlight-section";
 import { NowMode } from "@/components/now-mode";
+import { dailyBits } from "@/data/daily-bits";
 import { useTripPhase } from "@/hooks/use-trip-phase";
 
 interface TimeLeft {
@@ -811,6 +812,7 @@ export default function Home() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [currentSong] = useState<string>(() => getRandomSong());
   const tripPhase = useTripPhase(itinerary);
+  const activeBit = tripPhase.todayEntry ? dailyBits[tripPhase.todayEntry.isoDate] : null;
   
   const calculateTimeLeft = useCallback((): TimeLeft => {
     const now = new Date();
@@ -977,16 +979,16 @@ export default function Home() {
       {showConfetti && <Confetti />}
       
       {/* Hero Section */}
-      <section className={`relative ${tripPhase.phase === 'active' ? 'min-h-[40vh]' : 'h-[85vh] min-h-[600px]'} flex items-center justify-center overflow-hidden`}>
+      <section className={`relative ${tripPhase.phase === 'active' ? 'min-h-[56vh] sm:min-h-[62vh]' : 'h-[85vh] min-h-[600px]'} flex items-center justify-center overflow-hidden`}>
         {/* Background Image */}
         <div className="absolute inset-0">
           <img 
-            src={heroImage} 
-            alt="Beautiful Amalfi Coast at sunset" 
+            src={activeBit?.heroImageUrl ?? heroImage} 
+            alt={activeBit?.heroTitle ? `${activeBit.heroTitle} in ${tripPhase.todayEntry?.location ?? "Italy"}` : "Beautiful Amalfi Coast at sunset"} 
             className="w-full h-full object-cover"
             data-testid="img-hero"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60" />
+          <div className={`absolute inset-0 ${tripPhase.phase === 'active' ? 'bg-gradient-to-b from-black/30 via-black/45 to-black/75' : 'bg-gradient-to-b from-black/40 via-black/30 to-black/60'}`} />
         </div>
 
         {/* Top Controls - stacked vertically: checklist, share, sound */}
@@ -1038,10 +1040,19 @@ export default function Home() {
 
         {/* Content — countdown hero (pretrip/posttrip) or NowMode active banner */}
         {tripPhase.phase === 'active' && tripPhase.todayEntry !== null ? (
-          <div className="relative z-10 w-full py-6 sm:py-8 flex items-center justify-center">
-            <div className="text-center px-4">
-              <p className="text-white/90 uppercase tracking-[0.25em] text-xs sm:text-sm font-semibold text-shadow">
-                🇮🇹 Live from Italy · Day {tripPhase.dayNumber} of {itinerary.length}
+          <div className="relative z-10 w-full px-4 py-14 sm:py-18 flex items-end justify-center self-stretch">
+            <div className="w-full max-w-2xl mx-auto text-left mt-auto">
+              <div className="w-28 mb-4">
+                <ItalianFlagStripe />
+              </div>
+              <p className="text-white/85 uppercase tracking-[0.25em] text-xs sm:text-sm font-semibold text-shadow mb-3">
+                🇮🇹 Live from {tripPhase.todayEntry.location} · Day {tripPhase.dayNumber} of {itinerary.length} · {tripPhase.todayEntry.date}
+              </p>
+              <h1 className="font-serif text-4xl sm:text-6xl font-bold text-white leading-[0.95] text-shadow-lg mb-4">
+                {activeBit?.heroTitle ?? tripPhase.todayEntry.title}
+              </h1>
+              <p className="max-w-xl text-white/90 text-base sm:text-xl leading-snug text-shadow">
+                {activeBit?.heroSubtitle ?? "Flexible ideas, local flavor, and just enough structure to keep the adventure moving."}
               </p>
             </div>
           </div>

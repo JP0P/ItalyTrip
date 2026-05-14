@@ -36,7 +36,7 @@ export function TodayCard({ entry, dayNumber, totalDays, bit }: TodayCardProps) 
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <span className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
-              Now Playing in Rome 🇮🇹
+              {bit?.eyebrow ?? "Now Playing in Italy 🇮🇹"}
             </span>
           </div>
           <span className="text-sm font-semibold text-italy-green bg-italy-green/10 px-3 py-1 rounded-full">
@@ -51,9 +51,16 @@ export function TodayCard({ entry, dayNumber, totalDays, bit }: TodayCardProps) 
         </div>
 
         {/* Headline */}
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-foreground leading-tight mb-4">
-          {headline}
-        </h2>
+        <div className="mb-4">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-foreground leading-tight">
+            {headline}
+          </h2>
+          {bit?.heroSubtitle && (
+            <p className="text-sm text-muted-foreground leading-snug mt-1.5">
+              {bit.heroSubtitle}
+            </p>
+          )}
+        </div>
 
         {/* Flexible suggestions */}
         {bit?.suggestionSections?.length ? (
@@ -97,22 +104,35 @@ export function TodayCard({ entry, dayNumber, totalDays, bit }: TodayCardProps) 
                 Photos / links to explore
               </h3>
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 sm:grid-cols-2">
               {bit.exploreLinks.map((link) => (
                 <a
                   key={link.url}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-start justify-between gap-3 rounded-lg bg-background/80 px-3 py-2 text-left hover:bg-background transition-colors"
+                  className="group overflow-hidden rounded-xl bg-background/85 text-left hover:bg-background transition-colors shadow-sm"
                 >
-                  <span>
-                    <span className="block text-sm font-medium text-foreground">{link.label}</span>
-                    {link.note && (
-                      <span className="block text-xs text-muted-foreground mt-0.5">{link.note}</span>
-                    )}
+                  {link.imageUrl && (
+                    <div className="relative h-28 overflow-hidden">
+                      <img
+                        src={link.imageUrl}
+                        alt={link.imageAlt ?? link.label}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
+                    </div>
+                  )}
+                  <span className="flex items-start justify-between gap-3 px-3 py-2.5">
+                    <span>
+                      <span className="block text-sm font-medium text-foreground">{link.label}</span>
+                      {link.note && (
+                        <span className="block text-xs text-muted-foreground mt-0.5">{link.note}</span>
+                      )}
+                    </span>
+                    <ExternalLink className="w-4 h-4 text-italy-green mt-0.5 flex-shrink-0" />
                   </span>
-                  <ExternalLink className="w-4 h-4 text-italy-green mt-0.5 flex-shrink-0" />
                 </a>
               ))}
             </div>
