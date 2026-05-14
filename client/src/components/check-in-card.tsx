@@ -23,6 +23,7 @@ import {
   X,
   Images,
   ChevronRight,
+  ExternalLink,
 } from "lucide-react";
 import type { ChatMessage } from "@shared/schema";
 
@@ -95,11 +96,53 @@ function isTripCheckIn(message: ChatMessage) {
   return message.message.includes("📍 Trip check-in ·");
 }
 
-function getCheckInPreview(message: string) {
+function getCheckInPreviewLines(message: string) {
   return message
     .split("\n")
-    .filter((line) => !line.startsWith("📍 Trip check-in ·"))
-    .join("\n");
+    .filter((line) => !line.startsWith("📍 Trip check-in ·"));
+}
+
+function parseMapsLine(line: string) {
+  const match = line.match(/(https:\/\/maps\.google\.com\/\?q=[^\s]+)(?:\s*·\s*(.*))?/);
+  if (!match) return null;
+  return {
+    url: match[1],
+    meta: match[2] ?? "",
+  };
+}
+
+function CheckInPreview({ message }: { message: string }) {
+  const lines = getCheckInPreviewLines(message);
+
+  return (
+    <div className="space-y-1 text-sm text-foreground/90 break-words">
+      {lines.map((line, index) => {
+        const maps = parseMapsLine(line);
+        if (maps) {
+          return (
+            <div key={`${line}-${index}`} className="space-y-1">
+              <a
+                href={maps.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-full bg-italy-green/10 px-2.5 py-1 text-xs font-semibold text-italy-green hover:bg-italy-green/15"
+              >
+                <MapPin className="h-3.5 w-3.5" />
+                Open in Maps
+                <ExternalLink className="h-3 w-3" />
+              </a>
+              {maps.meta && <p className="text-xs text-muted-foreground">{maps.meta}</p>}
+            </div>
+          );
+        }
+        return (
+          <p key={`${line}-${index}`} className="whitespace-pre-line">
+            {line}
+          </p>
+        );
+      })}
+    </div>
+  );
 }
 
 function formatTime(date: Date | string) {
@@ -209,10 +252,10 @@ export function CheckInCard({ location, isoDate }: CheckInCardProps) {
         const lng = longitude.toFixed(5);
         const mapsUrl = `https://maps.google.com/?q=${lat},${lng}`;
         const accuracyText = Number.isFinite(accuracy)
-          ? ` · approx ${Math.round(accuracy)}m accuracy`
+          ? `Approx ${Math.round(accuracy)}m accuracy`
           : "";
         setIsLocating(false);
-        sendCheckIn(`Live location check-in 📍\n${mapsUrl}${accuracyText}`);
+        sendCheckIn(`Live location check-in 📍\n${mapsUrl}${accuracyText ? `\n${accuracyText}` : ""}`);
       },
       () => {
         setIsLocating(false);
@@ -476,9 +519,7 @@ export function CheckInCard({ location, isoDate }: CheckInCardProps) {
                           <span className="text-xs font-semibold text-italy-green">{msg.nickname}</span>
                           <span className="text-[11px] text-muted-foreground">{formatTime(msg.createdAt)}</span>
                         </div>
-                        <p className="text-sm text-foreground/90 whitespace-pre-line break-words">
-                          {getCheckInPreview(msg.message)}
-                        </p>
+                        <CheckInPreview message={msg.message} />
                       </div>
                     </div>
                   ))
