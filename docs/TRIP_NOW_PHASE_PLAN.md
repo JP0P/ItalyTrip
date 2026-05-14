@@ -2,6 +2,8 @@
 
 _Last updated: 2026-05-13_
 
+> Active local handoff lives in gitignored `PROJECT_PROGRESS.md` at the repo root. Read that first when resuming work, then use this tracked doc for durable product intent.
+
 ## Goal
 
 Evolve `italy.jpop.cloud` from a pre-trip countdown into a **live trip companion** for the vacation currently in progress, without losing any of the pre-trip/countdown work that can be reused for future trips.
