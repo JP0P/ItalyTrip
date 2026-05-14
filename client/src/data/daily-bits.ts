@@ -138,39 +138,315 @@ export const dailyBits: Record<string, DailyBit> = {
   },
   "2026-05-15": {
     isoDate: "2026-05-15",
-    urgencyLine: "Amalfi Coast incoming. Brace for vertical cliffs and dramatic beauty.",
+    headlineOverride: "Amalfi Arrival",
+    eyebrow: "Coast transfer day",
+    heroTitle: "Amalfi, First Look",
+    heroSubtitle: "Roma Termini to cliffs, lemons, and full coastal drama.",
+    heroImageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Amalfi_Coast_(Italy).jpg",
+    urgencyLine: "Rome → Naples → Amalfi Coast. Keep logistics clean, then let the coastline do the flexing.",
+    suggestionSections: [
+      {
+        label: "Travel anchors",
+        emoji: "🚆",
+        ideas: [
+          "Frecciarossa 8335: Roma Termini 10:20 → Napoli Centrale 11:33",
+          "Treat the Naples-to-coast transfer as the main boss fight; snacks and patience help",
+          "Once bags are down, do the first-look wander before anyone over-plans the night",
+        ],
+      },
+      {
+        label: "Arrival mode",
+        emoji: "🌊",
+        ideas: [
+          "Find the closest ridiculous sea view and let everyone recalibrate from Rome speed",
+          "Keep dinner low-friction: seafood, pasta, lemon anything, view if possible",
+          "If Ravello/Amalfi logistics are weird, pick vibes over perfection and stay flexible",
+        ],
+      },
+      {
+        label: "Food spotlights",
+        emoji: "🍋",
+        ideas: [
+          "Lemon everything: granita, delizia al limone, limoncello, zero restraint",
+          "Scialatielli ai frutti di mare if seafood-pasta mode is calling",
+          "Sfogliatella or a Naples-adjacent pastry if the transfer leaves snack damage",
+        ],
+      },
+      {
+        label: "Soft quests",
+        emoji: "📸",
+        ideas: [
+          "First coastline photo from somewhere that makes the group chat annoying",
+          "Find the route/ferry situation for tomorrow before spritz brain takes over",
+          "If energy is low, tonight is a balcony/glass/water-staring night. Valid.",
+        ],
+      },
+    ],
+    exploreLinks: [
+      {
+        label: "Roma Termini → Napoli Centrale train",
+        url: "https://www.trenitalia.com/en.html",
+        note: "Frecciarossa logistics check",
+      },
+      {
+        label: "Amalfi Coast ferry routes",
+        url: "https://www.travelmar.it/en/",
+        note: "Useful if the coast starts moving by water",
+      },
+      {
+        label: "Amalfi town map",
+        url: "https://www.google.com/maps/search/Amalfi+Coast+Amalfi+Italy/",
+        note: "Arrival wander / dinner scouting",
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Amalfi_Coast_(Italy).jpg",
+        imageAlt: "Amalfi Coast view",
+      },
+      {
+        label: "Ravello map",
+        url: "https://www.google.com/maps/search/Ravello+Italy/",
+        note: "If the crew wants the elegant cliffside detour",
+      },
+    ],
     sideQuests: [
       "🚂 Make the train. Frecciarossa 8335, Roma Termini 10:20.",
       "🌊 First look at the coast — mandatory awe moment",
       "🍋 Acquire a lemon-based something within one hour of arrival",
     ],
+    chaosBonus: "If everyone survives the transfer and still gets a sea-view drink, Amalfi has officially begun.",
   },
   "2026-05-16": {
     isoDate: "2026-05-16",
-    urgencyLine: "Capri day. It's an island. It's perfect. Try not to miss the ferry back.",
-    sideQuests: [
-      "🚢 Blue Grotto or bust",
-      "📸 Find a view that makes everyone back home insane with jealousy",
-      "💅 Aperol Spritz with a view: mandatory",
+    headlineOverride: "Capri Day",
+    eyebrow: "Island chaos board",
+    heroTitle: "Capri, Showing Off",
+    heroSubtitle: "Ferries, cliffs, blue water, and probably one wildly overpriced spritz.",
+    heroImageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Capri_skaly_Faraglione.JPG",
+    urgencyLine: "Capri can be Blue Grotto, Anacapri, Faraglioni views, or just glamorous wandering. Let sea conditions decide the exact chaos.",
+    suggestionSections: [
+      {
+        label: "Morning anchors",
+        emoji: "🚢",
+        ideas: [
+          "Check ferry timing early; Capri rewards people who do not freestyle the return boat",
+          "If Blue Grotto conditions are good, go early before the queue becomes a personality test",
+          "If the grotto is closed, pivot fast: Anacapri + Monte Solaro chairlift is not a consolation prize",
+        ],
+      },
+      {
+        label: "Capri moves",
+        emoji: "🏝️",
+        ideas: [
+          "Marina Grande arrival, then funicular/taxi up before the harbor eats the whole day",
+          "Gardens of Augustus for Faraglioni views without requiring a full expedition",
+          "Anacapri if the crew wants the slightly calmer, higher-up version of the island",
+        ],
+      },
+      {
+        label: "View / photo targets",
+        emoji: "📸",
+        ideas: [
+          "Faraglioni rocks: the obvious shot because sometimes obvious is correct",
+          "Monte Solaro if chairlift energy beats boutique wandering",
+          "A boat or overlook photo that makes Capri look fake, because Capri kind of is",
+        ],
+      },
+      {
+        label: "Food & drink",
+        emoji: "🍹",
+        ideas: [
+          "Aperol or limoncello spritz with a view; price pain is part of the ritual",
+          "Caprese salad actually on Capri, because geography demands it",
+          "Seafood pasta if the ferry back is late enough to justify staying feral",
+        ],
+      },
     ],
+    exploreLinks: [
+      {
+        label: "Capri ferry options",
+        url: "https://www.capri.com/en/ferry-schedule",
+        note: "Check same-day timing before committing",
+      },
+      {
+        label: "Blue Grotto info",
+        url: "https://www.capri.com/en/s/blue-grotto",
+        note: "Sea-condition-dependent brain melter",
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Grotta_azzurra.capri.JPG",
+        imageAlt: "Blue Grotto in Capri",
+      },
+      {
+        label: "Monte Solaro chairlift",
+        url: "https://www.capri.com/en/e/mount-solaro-chairlift",
+        note: "Single-seat sky chair chaos",
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Anacapri_-_Monte_Solaro_-_panoramio.jpg",
+        imageAlt: "Monte Solaro view in Capri",
+      },
+      {
+        label: "Gardens of Augustus map",
+        url: "https://www.google.com/maps/search/Gardens+of+Augustus+Capri/",
+        note: "Easy Faraglioni overlook",
+      },
+    ],
+    sideQuests: [
+      "🚢 Blue Grotto if the sea says yes; graceful pivot if it says absolutely not",
+      "📸 Find a view that makes everyone back home insane with jealousy",
+      "💅 Aperol Spritz with a view: mandatory emotional support beverage",
+    ],
+    chaosBonus: "If you make the return ferry with everyone accounted for, Capri did not defeat you.",
   },
   "2026-05-17": {
     isoDate: "2026-05-17",
-    urgencyLine: "Cooking class day. You're becoming Italian today, whether Italy is ready or not.",
+    headlineOverride: "Cooking & Coast Day",
+    eyebrow: "Hands-on / ferry-hop day",
+    heroTitle: "Pasta, Lemons, Sea",
+    heroSubtitle: "Cook something, eat everything, then chase another coastal town if energy allows.",
+    heroImageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/How_to_cut_the_fresh_egg_pasta_with_a_knife_The_art_of_pasta_making_in_Italy.JPG",
+    urgencyLine: "Cooking class is the anchor. The rest of the day can flex around appetite, ferry timing, and how aggressively the coast is calling.",
+    suggestionSections: [
+      {
+        label: "Main anchor",
+        emoji: "👨‍🍳",
+        ideas: [
+          "Cooking class is the day's one real commitment; protect the timing and let the rest breathe",
+          "Ask one technique question you might actually use back home",
+          "If they hand you local wine during prep, the answer is yes unless logistics object",
+        ],
+      },
+      {
+        label: "Coastal add-ons",
+        emoji: "⛵",
+        ideas: [
+          "Ferry-hop to Positano if the crew wants the glamorous postcard version of the coast",
+          "Minori/Maiori can be the easier, less performative wander if everyone is cooked",
+          "Ravello remains the elegant high-ground option if views beat beach chaos",
+        ],
+      },
+      {
+        label: "Food spotlights",
+        emoji: "🍝",
+        ideas: [
+          "Fresh pasta you helped make, ideally with lemon or seafood somewhere in the story",
+          "Delizia al limone for dessert if the coast has not already turned everyone into lemons",
+          "Anchovies, mozzarella, tomatoes, basil: simple things that hit harder here",
+        ],
+      },
+      {
+        label: "Evening ideas",
+        emoji: "🌅",
+        ideas: [
+          "Sunset from wherever requires the least transit drama",
+          "Low-key seafood dinner if lunch turned into a whole event",
+          "Balcony/water-staring decompression is a legitimate itinerary item",
+        ],
+      },
+    ],
+    exploreLinks: [
+      {
+        label: "Positano map",
+        url: "https://www.google.com/maps/search/Positano+Italy/",
+        note: "Postcard-coast wander",
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Positano_Amalfi_Coast_Italy.jpg",
+        imageAlt: "Positano on the Amalfi Coast",
+      },
+      {
+        label: "Minori map",
+        url: "https://www.google.com/maps/search/Minori+Italy/",
+        note: "Easier pastry/coast detour",
+      },
+      {
+        label: "Villa Cimbrone / Ravello",
+        url: "https://www.villacimbrone.com/en/",
+        note: "Terrace of Infinity option",
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Cimbrone_terraza_infinito_01.jpg",
+        imageAlt: "Terrace of Infinity at Villa Cimbrone",
+      },
+      {
+        label: "Amalfi Coast ferry routes",
+        url: "https://www.travelmar.it/en/",
+        note: "Plan the hop before dinner brain",
+      },
+    ],
     sideQuests: [
       "👨‍🍳 Learn one technique you'll actually remember",
-      "🍷 Pair everything with local wine, including breakfast",
-      "⛵ Ferry-hop to at least one extra coastal town",
+      "🍷 Pair something with local wine and pretend this is educational",
+      "⛵ Ferry-hop or view-hop to one extra coastal town if energy survives lunch",
     ],
+    chaosBonus: "If somebody says 'we could make this at home' while staring at the Mediterranean, they are lying but let them dream.",
   },
   "2026-05-18": {
     isoDate: "2026-05-18",
-    urgencyLine: "Rest day. You've earned this. Eat gelato for breakfast if you want.",
+    headlineOverride: "Coast Recovery Day",
+    eyebrow: "Rest day, allegedly",
+    heroTitle: "Do Less, Better",
+    heroSubtitle: "Beach, balcony, seafood, lemons, and no fake productivity unless the crew wants it.",
+    heroImageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Ferry_Ride_Between_Amalfi_and_Positano_(42250218604).jpg",
+    urgencyLine: "This is the buffer day. Use it for rest, one perfect coastal move, or the thing everyone wishes they had done earlier.",
+    suggestionSections: [
+      {
+        label: "Slow morning",
+        emoji: "😴",
+        ideas: [
+          "Sleep in if bodies are voting no; the site officially endorses not being heroic",
+          "Coffee with a view before making even one decision",
+          "Laundry / repack / life admin only if it buys future peace",
+        ],
+      },
+      {
+        label: "Pick-one adventures",
+        emoji: "🌊",
+        ideas: [
+          "Beach or swim stop if the weather is showing off",
+          "Ravello / Terrace of Infinity if the crew never made it uphill",
+          "Short ferry ride just to see the coast from water without turning it into a mission",
+        ],
+      },
+      {
+        label: "Food spotlights",
+        emoji: "🦐",
+        ideas: [
+          "Seafood dinner with something you cannot pronounce but can point at confidently",
+          "Lemon dessert victory lap: delizia, granita, limoncello, dealer's choice",
+          "Pizza or pasta comfort meal if everyone is travel-tired and done being impressive",
+        ],
+      },
+      {
+        label: "Reset for Florence",
+        emoji: "🎒",
+        ideas: [
+          "Confirm tomorrow's departure plan before the final coastal spritz",
+          "Charge batteries, clear storage, rescue camera roll chaos",
+          "One last coastline check-in/photo so Amalfi gets its proper goodbye",
+        ],
+      },
+    ],
+    exploreLinks: [
+      {
+        label: "Atrani map",
+        url: "https://www.google.com/maps/search/Atrani+Italy/",
+        note: "Tiny, nearby, beautiful wander",
+        imageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Atrani_-_panoramio.jpg",
+        imageAlt: "Atrani on the Amalfi Coast",
+      },
+      {
+        label: "Ravello map",
+        url: "https://www.google.com/maps/search/Ravello+Italy/",
+        note: "Best if you still need the balcony seats",
+      },
+      {
+        label: "Amalfi beaches map",
+        url: "https://www.google.com/maps/search/beach+near+Amalfi+Italy/",
+        note: "Low-effort recovery target",
+      },
+      {
+        label: "Florence transfer prep",
+        url: "https://www.trenitalia.com/en.html",
+        note: "Tomorrow-you says thank you",
+      },
+    ],
     sideQuests: [
       "😴 Sleep past 8am (this is the mission)",
       "🏖️ Find your version of a perfect lazy Italian afternoon",
       "🥂 Seafood dinner — something you can't pronounce",
     ],
+    chaosBonus: "If the only achievement is one great meal and one great view, that's not failure. That's vacation literacy.",
   },
   "2026-05-19": {
     isoDate: "2026-05-19",
