@@ -3,6 +3,7 @@ import { BaseCampCard } from "@/components/base-camp-card";
 import { DailyBitCard } from "@/components/daily-bit-card";
 import { PhraseCheatsheet } from "@/components/phrase-cheatsheet";
 import { CheckInCard } from "@/components/check-in-card";
+import { DaySwitcher } from "@/components/day-switcher";
 import { dailyBits } from "@/data/daily-bits";
 
 interface NowItineraryDay {
@@ -28,9 +29,10 @@ interface NowModeProps {
   dayNumber: number;
   totalDays: number;
   locationInfoMap: Record<string, LocationInfo>;
+  itinerary: NowItineraryDay[];
 }
 
-export function NowMode({ todayEntry, dayNumber, totalDays, locationInfoMap }: NowModeProps) {
+export function NowMode({ todayEntry, dayNumber, totalDays, locationInfoMap, itinerary }: NowModeProps) {
   const bit = dailyBits[todayEntry.isoDate] ?? null;
   const baseLocationInfo = locationInfoMap[todayEntry.location] ?? {
     vibe: todayEntry.location,
@@ -48,6 +50,7 @@ export function NowMode({ todayEntry, dayNumber, totalDays, locationInfoMap }: N
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-4 px-4 py-6 sm:py-8">
+      <DaySwitcher days={itinerary} currentDay={dayNumber} />
       <TodayCard
         entry={todayEntry}
         dayNumber={dayNumber}

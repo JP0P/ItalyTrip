@@ -1127,6 +1127,7 @@ export default function Home() {
           dayNumber={tripPhase.dayNumber!}
           totalDays={itinerary.length}
           locationInfoMap={locationInfoMap}
+          itinerary={itinerary}
         />
       )}
 
