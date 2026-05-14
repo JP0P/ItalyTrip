@@ -2,6 +2,7 @@ import { TodayCard } from "@/components/today-card";
 import { BaseCampCard } from "@/components/base-camp-card";
 import { DailyBitCard } from "@/components/daily-bit-card";
 import { PhraseCheatsheet } from "@/components/phrase-cheatsheet";
+import { CheckInCard } from "@/components/check-in-card";
 import { dailyBits } from "@/data/daily-bits";
 
 interface NowItineraryDay {
@@ -53,6 +54,7 @@ export function NowMode({ todayEntry, dayNumber, totalDays, locationInfoMap }: N
         totalDays={totalDays}
         bit={bit}
       />
+      <CheckInCard location={todayEntry.location} isoDate={todayEntry.isoDate} />
       <BaseCampCard location={todayEntry.location} locationInfo={locationInfo} />
       {bit && <DailyBitCard bit={bit} />}
       <PhraseCheatsheet />
