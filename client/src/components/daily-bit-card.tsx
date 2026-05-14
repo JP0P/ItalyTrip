@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { CheckCircle2, Circle, RotateCcw, Zap } from "lucide-react";
+import { CheckCircle2, ChevronDown, Circle, RotateCcw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DailyBit } from "@/data/daily-bits";
@@ -13,11 +13,17 @@ function getStorageKey(bit: DailyBit) {
   return `side-quests:${bit.isoDate}`;
 }
 
+function getExpandedStorageKey(bit: DailyBit) {
+  return `side-quests-expanded:${bit.isoDate}`;
+}
+
 export function DailyBitCard({ bit, featured = false }: DailyBitCardProps) {
   const storageKey = useMemo(() => getStorageKey(bit), [bit]);
+  const expandedStorageKey = useMemo(() => getExpandedStorageKey(bit), [bit]);
   const [completed, setCompleted] = useState<boolean[]>(() =>
     Array.from({ length: bit.sideQuests.length }, () => false),
   );
+  const [isExpanded, setIsExpanded] = useState(!featured);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -41,12 +47,35 @@ export function DailyBitCard({ bit, featured = false }: DailyBitCardProps) {
   }, [bit.sideQuests, storageKey]);
 
   useEffect(() => {
+    if (typeof window === "undefined" || !featured) return;
+
+    try {
+      const saved = window.localStorage.getItem(expandedStorageKey);
+      setIsExpanded(saved === "true");
+    } catch {
+      setIsExpanded(false);
+    }
+  }, [expandedStorageKey, featured]);
+
+  useEffect(() => {
     if (typeof window === "undefined") return;
     window.localStorage.setItem(storageKey, JSON.stringify(completed));
   }, [completed, storageKey]);
 
+  useEffect(() => {
+    if (typeof window === "undefined" || !featured) return;
+    window.localStorage.setItem(expandedStorageKey, String(isExpanded));
+  }, [expandedStorageKey, featured, isExpanded]);
+
   const completedCount = completed.filter(Boolean).length;
   const allComplete = completedCount === bit.sideQuests.length && bit.sideQuests.length > 0;
+
+  useEffect(() => {
+    if (!featured || !allComplete || !isExpanded) return;
+
+    const timer = window.setTimeout(() => setIsExpanded(false), 800);
+    return () => window.clearTimeout(timer);
+  }, [allComplete, featured, isExpanded]);
 
   const toggleQuest = (index: number) => {
     setCompleted((current) =>
@@ -56,7 +85,15 @@ export function DailyBitCard({ bit, featured = false }: DailyBitCardProps) {
 
   const resetQuests = () => {
     setCompleted(Array.from({ length: bit.sideQuests.length }, () => false));
+    if (featured) setIsExpanded(true);
   };
+
+  const toggleExpanded = () => {
+    if (!featured) return;
+    setIsExpanded((current) => !current);
+  };
+
+  const showQuestDetails = !featured || isExpanded;
 
   return (
     <Card
@@ -71,8 +108,14 @@ export function DailyBitCard({ bit, featured = false }: DailyBitCardProps) {
         <div className="h-1.5 bg-gradient-to-r from-italy-green via-white to-italy-red" />
       )}
       <div className={featured ? "p-4 sm:p-5" : "p-5 sm:p-6"}>
-        <div className="flex items-start justify-between gap-3 mb-4">
-          <div>
+        <button
+          type="button"
+          onClick={toggleExpanded}
+          className={`w-full flex items-center justify-between gap-3 text-left ${showQuestDetails ? "mb-4" : ""}`}
+          aria-expanded={showQuestDetails}
+          data-testid="button-toggle-todays-missions"
+        >
+          <div className="min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <span className={featured ? "text-xl" : "text-base"} aria-hidden="true">🎯</span>
               <span className={`uppercase tracking-widest font-semibold ${featured ? "text-italy-red text-xs" : "text-muted-foreground text-xs"}`}>
@@ -80,11 +123,21 @@ export function DailyBitCard({ bit, featured = false }: DailyBitCardProps) {
               </span>
             </div>
             <p className={featured ? "text-sm font-medium text-foreground" : "text-xs text-muted-foreground"}>
-              {completedCount}/{bit.sideQuests.length} complete · tap a quest to mark it done
+              {completedCount}/{bit.sideQuests.length} complete{allComplete ? " ✅" : ""}
+              {showQuestDetails ? " · tap a quest to mark it done" : " · tap to expand"}
             </p>
           </div>
 
-          {completedCount > 0 && (
+          {featured && (
+            <ChevronDown
+              className={`h-5 w-5 flex-shrink-0 text-italy-red transition-transform ${showQuestDetails ? "rotate-180" : ""}`}
+              aria-hidden="true"
+            />
+          )}
+        </button>
+
+        {showQuestDetails && completedCount > 0 && (
+          <div className="mb-3 flex justify-end">
             <Button
               variant="ghost"
               size="sm"
@@ -95,18 +148,11 @@ export function DailyBitCard({ bit, featured = false }: DailyBitCardProps) {
               <RotateCcw className="w-3.5 h-3.5 mr-1" />
               Reset
             </Button>
-          )}
-        </div>
-
-        {featured && (
-          <div className="mb-3 rounded-xl border border-italy-red/15 bg-background/65 px-3 py-2">
-            <p className="text-xs text-muted-foreground leading-snug">
-              Beat today by clearing the board. Useful? Maybe. Spiritually mandatory? Absolutely.
-            </p>
           </div>
         )}
 
-        <ul className={featured ? "space-y-2.5" : "space-y-3"}>
+        {showQuestDetails && (
+          <ul className={featured ? "space-y-2.5" : "space-y-3"}>
           {bit.sideQuests.map((quest, i) => {
             const isComplete = completed[i];
 
@@ -139,9 +185,10 @@ export function DailyBitCard({ bit, featured = false }: DailyBitCardProps) {
               </li>
             );
           })}
-        </ul>
+          </ul>
+        )}
 
-        {allComplete && (
+        {showQuestDetails && allComplete && (
           <div className="mt-4 px-4 py-3 bg-italy-green/10 border border-italy-green/25 rounded-lg">
             <p className="text-xs font-medium text-italy-green leading-snug">
               ✅ Side quest board cleared. Dangerous levels of vacation competence.
@@ -149,7 +196,7 @@ export function DailyBitCard({ bit, featured = false }: DailyBitCardProps) {
           </div>
         )}
 
-        {bit.chaosBonus && (
+        {showQuestDetails && bit.chaosBonus && (
           <div className="mt-4 px-4 py-3 bg-italy-green/8 border border-italy-green/20 rounded-lg">
             <p className="text-xs font-medium text-italy-green leading-snug">
               🎲 Chaos Bonus: {bit.chaosBonus}
