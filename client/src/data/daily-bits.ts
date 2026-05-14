@@ -44,26 +44,26 @@ export const dailyBits: Record<string, DailyBit> = {
     headlineOverride: "Rome Today",
     eyebrow: "Only full Rome day",
     heroTitle: "Rome, Unscripted",
-    heroSubtitle: "Pantheon, Colosseum, Trastevere, and whatever beautiful chaos wins the day.",
+    heroSubtitle: "Vatican, Pantheon, then Colosseum-view drinks at The Court.",
     heroImageUrl: "/rome/rome-colosseum.jpg",
     urgencyLine:
-      "Only full Rome day. No strict marching orders — pick the strongest combo and let Rome do Rome.",
+      "Real plan forming: Vatican → Pantheon → drinks overlooking the Colosseum at The Court. Still flexible, still Rome doing Rome.",
     suggestionSections: [
       {
         label: "Morning suggestions",
         emoji: "☕",
         ideas: [
-          "Pantheon early-ish if everyone is awake enough to appreciate a 2,000-year-old ceiling flex",
-          "Coffee + cornetto nearby before committing to any ruins-based decisions",
-          "Piazza Navona / Campo de' Fiori wander if the crew needs a softer launch",
+          "Vatican / Sistine / St. Peter's if the crew is ready for peak Rome grandeur",
+          "Coffee + cornetto before committing to any basilica-level decisions",
+          "Pantheon can slide later if Vatican timing becomes the main character",
         ],
       },
       {
         label: "Daytime anchors",
         emoji: "🏛️",
         ideas: [
-          "Colosseum + Roman Forum if ancient Rome mode is the main event",
-          "Vatican / Sistine / St. Peter's stays as the heavyweight backup if tickets/logistics line up",
+          "Pantheon as the clean, central, jaw-dropping anchor between Vatican and evening plans",
+          "Colosseum / Roman Forum if ancient Rome mode still has legs before drinks",
           "Capitoline Hill if you want classic Rome views without turning the day into a museum marathon",
         ],
       },
@@ -80,9 +80,9 @@ export const dailyBits: Record<string, DailyBit> = {
         label: "Evening / night ideas",
         emoji: "🥂",
         ideas: [
-          "Trastevere dinner crawl: let the street pick the restaurant, not a spreadsheet",
-          "Gelato walk back toward the hotel like civilized chaos goblins",
-          "One dramatic piazza nightcap if feet are still operational",
+          "The Court at Palazzo Manfredi: cocktail-bar view straight at the Colosseum",
+          "Aroma next door is the fancy rooftop restaurant backup, but The Court is the drink target",
+          "Gelato walk after, because ancient ruins plus cocktails requires balance",
         ],
       },
       {
@@ -102,6 +102,13 @@ export const dailyBits: Record<string, DailyBit> = {
         note: "Tickets, hours, and dome lore",
         imageUrl: "/rome/rome-pantheon.jpg",
         imageAlt: "Pantheon exterior in Rome",
+      },
+      {
+        label: "The Court — Colosseum-view cocktails",
+        url: "https://www.manfredihotels.com/en/the-court/",
+        note: "Tonight's drinks target at Palazzo Manfredi",
+        imageUrl: "/rome/rome-colosseum.jpg",
+        imageAlt: "Colosseum exterior in Rome",
       },
       {
         label: "Colosseum official tickets/info",
