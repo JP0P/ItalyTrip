@@ -18,9 +18,10 @@ interface TodayCardProps {
   totalDays: number;
   bit: DailyBit | null;
   checkInSlot?: ReactNode;
+  missionsSlot?: ReactNode;
 }
 
-export function TodayCard({ entry, dayNumber, totalDays, bit, checkInSlot }: TodayCardProps) {
+export function TodayCard({ entry, dayNumber, totalDays, bit, checkInSlot, missionsSlot }: TodayCardProps) {
   const headline = bit?.headlineOverride ?? entry.title;
   const urgencyLine = bit?.urgencyLine ?? null;
 
@@ -67,6 +68,12 @@ export function TodayCard({ entry, dayNumber, totalDays, bit, checkInSlot }: Tod
         {checkInSlot && (
           <div className="mb-4">
             {checkInSlot}
+          </div>
+        )}
+
+        {missionsSlot && (
+          <div className="mb-4">
+            {missionsSlot}
           </div>
         )}
 

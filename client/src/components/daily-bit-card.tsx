@@ -6,13 +6,14 @@ import { DailyBit } from "@/data/daily-bits";
 
 interface DailyBitCardProps {
   bit: DailyBit;
+  featured?: boolean;
 }
 
 function getStorageKey(bit: DailyBit) {
   return `side-quests:${bit.isoDate}`;
 }
 
-export function DailyBitCard({ bit }: DailyBitCardProps) {
+export function DailyBitCard({ bit, featured = false }: DailyBitCardProps) {
   const storageKey = useMemo(() => getStorageKey(bit), [bit]);
   const [completed, setCompleted] = useState<boolean[]>(() =>
     Array.from({ length: bit.sideQuests.length }, () => false),
@@ -58,18 +59,28 @@ export function DailyBitCard({ bit }: DailyBitCardProps) {
   };
 
   return (
-    <Card className="overflow-hidden border-0 shadow-md">
-      <div className="p-5 sm:p-6">
+    <Card
+      className={`overflow-hidden ${
+        featured
+          ? "border-italy-red/30 bg-gradient-to-br from-italy-red/10 via-card to-italy-green/10 shadow-xl ring-1 ring-italy-red/10"
+          : "border-0 shadow-md"
+      }`}
+      data-testid="card-todays-missions"
+    >
+      {featured && (
+        <div className="h-1.5 bg-gradient-to-r from-italy-green via-white to-italy-red" />
+      )}
+      <div className={featured ? "p-4 sm:p-5" : "p-5 sm:p-6"}>
         <div className="flex items-start justify-between gap-3 mb-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Zap className="w-4 h-4 text-italy-red" />
-              <span className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
-                Crew Side Quests 🎯
+              <span className={featured ? "text-xl" : "text-base"} aria-hidden="true">🎯</span>
+              <span className={`uppercase tracking-widest font-semibold ${featured ? "text-italy-red text-xs" : "text-muted-foreground text-xs"}`}>
+                {featured ? "Today's Missions" : "Crew Side Quests 🎯"}
               </span>
             </div>
-            <p className="text-xs text-muted-foreground">
-              {completedCount}/{bit.sideQuests.length} completed · tap to check off
+            <p className={featured ? "text-sm font-medium text-foreground" : "text-xs text-muted-foreground"}>
+              {completedCount}/{bit.sideQuests.length} complete · tap a quest to mark it done
             </p>
           </div>
 
@@ -87,7 +98,15 @@ export function DailyBitCard({ bit }: DailyBitCardProps) {
           )}
         </div>
 
-        <ul className="space-y-3">
+        {featured && (
+          <div className="mb-3 rounded-xl border border-italy-red/15 bg-background/65 px-3 py-2">
+            <p className="text-xs text-muted-foreground leading-snug">
+              Beat today by clearing the board. Useful? Maybe. Spiritually mandatory? Absolutely.
+            </p>
+          </div>
+        )}
+
+        <ul className={featured ? "space-y-2.5" : "space-y-3"}>
           {bit.sideQuests.map((quest, i) => {
             const isComplete = completed[i];
 
@@ -96,10 +115,14 @@ export function DailyBitCard({ bit }: DailyBitCardProps) {
                 <button
                   type="button"
                   onClick={() => toggleQuest(i)}
-                  className={`w-full flex items-start gap-3 p-3 rounded-lg border text-left text-sm leading-snug transition-all ${
+                  className={`w-full flex items-start gap-3 rounded-xl border text-left text-sm leading-snug transition-all ${
+                    featured ? "p-3.5 shadow-sm active:scale-[0.99]" : "p-3"
+                  } ${
                     isComplete
                       ? "bg-italy-green/10 border-italy-green/30 text-foreground/70"
-                      : "bg-card border-border text-foreground hover:border-italy-green/30 hover:bg-italy-green/5"
+                      : featured
+                        ? "bg-background/90 border-italy-red/20 text-foreground hover:border-italy-red/40 hover:bg-white/90"
+                        : "bg-card border-border text-foreground hover:border-italy-green/30 hover:bg-italy-green/5"
                   }`}
                   aria-pressed={isComplete}
                   data-testid={`button-side-quest-${i}`}
@@ -107,7 +130,7 @@ export function DailyBitCard({ bit }: DailyBitCardProps) {
                   {isComplete ? (
                     <CheckCircle2 className="w-5 h-5 text-italy-green mt-0.5 flex-shrink-0" />
                   ) : (
-                    <Circle className="w-5 h-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    <Circle className={`w-5 h-5 mt-0.5 flex-shrink-0 ${featured ? "text-italy-red" : "text-muted-foreground"}`} />
                   )}
                   <span className={isComplete ? "line-through decoration-italy-green/60" : ""}>
                     {quest}
