@@ -523,10 +523,7 @@ const itinerary: ItineraryDay[] = [
     location: "Rome",
     title: "Only Full Rome Day",
     activities: [
-      "Morning: Pantheon — arrive early, beat the crowds ☕",
-      "Midday: Colosseum & Roman Forum — ancient Rome mode activated 🏛️",
-      "Backup option: Vatican Museums / Sistine Chapel / St. Peter's",
-      "Evening: Trastevere — wander, eat everything, no plan needed 🍝"
+      "Pantheon, Colosseum, Roman Forum, Vatican backup, Trastevere wandering — use these as flexible anchors, not marching orders."
     ],
     icon: Building
   },

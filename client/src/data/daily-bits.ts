@@ -1,9 +1,23 @@
+export interface SuggestionSection {
+  label: string;
+  emoji: string;
+  ideas: string[];
+}
+
+export interface ExploreLink {
+  label: string;
+  url: string;
+  note?: string;
+}
+
 export interface DailyBit {
   isoDate: string;
   headlineOverride?: string;
   urgencyLine: string;
   sideQuests: string[];
   chaosBonus?: string;
+  suggestionSections?: SuggestionSection[];
+  exploreLinks?: ExploreLink[];
 }
 
 export const dailyBits: Record<string, DailyBit> = {
@@ -21,9 +35,78 @@ export const dailyBits: Record<string, DailyBit> = {
   },
   "2026-05-14": {
     isoDate: "2026-05-14",
-    headlineOverride: "Only Full Rome Day",
+    headlineOverride: "Rome Choose-Your-Own-Chaos Board",
     urgencyLine:
-      "Only full Rome day. Pantheon + Colosseum mode. Hydrate, caffeinate, and don't let any line spiritually defeat you.",
+      "Only full Rome day. No strict marching orders — pick the strongest combo and let Rome do Rome.",
+    suggestionSections: [
+      {
+        label: "Morning suggestions",
+        emoji: "☕",
+        ideas: [
+          "Pantheon early-ish if everyone is awake enough to appreciate a 2,000-year-old ceiling flex",
+          "Coffee + cornetto nearby before committing to any ruins-based decisions",
+          "Piazza Navona / Campo de' Fiori wander if the crew needs a softer launch",
+        ],
+      },
+      {
+        label: "Daytime anchors",
+        emoji: "🏛️",
+        ideas: [
+          "Colosseum + Roman Forum if ancient Rome mode is the main event",
+          "Vatican / Sistine / St. Peter's stays as the heavyweight backup if tickets/logistics line up",
+          "Capitoline Hill if you want classic Rome views without turning the day into a museum marathon",
+        ],
+      },
+      {
+        label: "Offbeat views & walks",
+        emoji: "👀",
+        ideas: [
+          "Aventine Keyhole + Orange Garden for a quieter weird little Rome view quest",
+          "Gianicolo Hill if sunset energy beats another ticketed monument",
+          "Trastevere side streets when everyone wants vibes instead of lines",
+        ],
+      },
+      {
+        label: "Evening / night ideas",
+        emoji: "🥂",
+        ideas: [
+          "Trastevere dinner crawl: let the street pick the restaurant, not a spreadsheet",
+          "Gelato walk back toward the hotel like civilized chaos goblins",
+          "One dramatic piazza nightcap if feet are still operational",
+        ],
+      },
+      {
+        label: "Food spotlights",
+        emoji: "🍝",
+        ideas: [
+          "Carbonara / amatriciana / cacio e pepe — Rome pasta holy trinity",
+          "Trapizzino-style street food if you need fast, local, handheld fuel",
+          "Supplì: fried rice ball, red sauce, mozzarella, zero regrets",
+        ],
+      },
+    ],
+    exploreLinks: [
+      {
+        label: "Pantheon official site",
+        url: "https://www.pantheonroma.com/home-eng/",
+        note: "Tickets, hours, and dome lore",
+      },
+      {
+        label: "Colosseum official tickets/info",
+        url: "https://colosseo.it/en/",
+        note: "Official monument info + visit planning",
+      },
+      {
+        label: "Aventine Keyhole / Orange Garden map",
+        url: "https://www.google.com/maps/search/Aventine+Keyhole+Orange+Garden+Rome/",
+        note: "Offbeat view mini-quest",
+      },
+      {
+        label: "Trastevere food map",
+        url: "https://www.google.com/maps/search/Trastevere+Rome+restaurants/",
+        note: "Dinner chaos board",
+      },
+    ],
     sideQuests: [
       "🏛️ Ask an actual Italian for one real local recommendation (not TripAdvisor)",
       "💑 Bonus: If the ladies are on the case, identify one plausible Roman husband candidate",
