@@ -340,6 +340,28 @@ For **May 14 / Day 2 / Rome**:
 - Expense-per-itinerary-event idea is **parked for later** (not built now).
 - Keep an **emoji-forward** thematic flair: emoji reactions in the UI, emoji micro-buttons, emoji status hints. Backend persistence still deferred.
 
+### JPop Correction: Less Bossy, More Regional Menu (2026-05-13)
+
+JPop liked the direction but did **not** want the site telling the crew exactly what time they should be somewhere. The live trip companion should feel like a flexible regional guide, not a rigid schedule.
+
+Updated intent:
+
+- Replace strict time-block language with flexible categories:
+  - Morning suggestions
+  - Daytime anchors
+  - Evening / night ideas
+  - Trail, hike, offbeat view, or walk suggestions
+  - Food spotlights for the current region
+- Keep itinerary anchors, but phrase them as options / ideas rather than instructions.
+- Include photos and/or links to explore more when useful.
+- Preserve the thematic flare: playful, useful, emoji-forward, vacation-energy, not corporate travel software.
+
+Implemented in commit `0500b60 feat: make Rome now mode flexible`:
+
+- Rome card became **“Rome Choose-Your-Own-Chaos Board.”**
+- Added suggestion sections for morning, daytime anchors, offbeat views/walks, evening/night, and food spotlights.
+- Added explore links for Pantheon, Colosseum, Aventine Keyhole / Orange Garden, and Trastevere food map.
+
 ### Concrete Signoff Scope
 
 If approved, build **Phase 1 Rome NOW MVP** only:
