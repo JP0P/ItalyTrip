@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { MapPin, CheckCircle2, Send, LocateFixed, AlertCircle } from "lucide-react";
+import { MapPin, CheckCircle2, Send, LocateFixed, AlertCircle, Camera, X } from "lucide-react";
 
 interface CheckInCardProps {
   location: string;
@@ -18,6 +18,11 @@ const romeCheckIns = [
   { label: "The Court", emoji: "🥂", message: "Checked in at The Court — Colosseum-view drinks mode 🥂🏛️" },
   { label: "Gelato", emoji: "🍦", message: "Gelato check-in 🍦" },
 ];
+
+const MAX_DIMENSION = 800;
+const JPEG_QUALITY = 0.65;
+const MAX_COMPRESSED_BYTES = 300 * 1024;
+const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"];
 
 function getNickname() {
   if (typeof window === "undefined") return "Trip Crew";
@@ -34,29 +39,101 @@ function getDefaultCheckIns(location: string) {
   ];
 }
 
+function compressImage(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let { width, height } = img;
+      if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+        const scale = MAX_DIMENSION / Math.max(width, height);
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) { reject(new Error("Canvas not supported")); return; }
+      ctx.drawImage(img, 0, 0, width, height);
+      const dataUrl = canvas.toDataURL("image/jpeg", JPEG_QUALITY);
+      if (dataUrl.length > MAX_COMPRESSED_BYTES) {
+        reject(new Error("Photo is still too large after compression. Try a smaller image."));
+        return;
+      }
+      resolve(dataUrl);
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Could not read that image. Try a JPEG or PNG."));
+    };
+    img.src = url;
+  });
+}
+
 export function CheckInCard({ location, isoDate }: CheckInCardProps) {
   const [customPlace, setCustomPlace] = useState("");
   const [checkInNote, setCheckInNote] = useState("");
   const [lastCheckIn, setLastCheckIn] = useState<string | null>(null);
   const [isLocating, setIsLocating] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
+
+  // Photo state
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const checkIns = getDefaultCheckIns(location);
 
   const checkInMutation = useMutation({
-    mutationFn: async (message: string) => {
+    mutationFn: async (payload: { message: string; photo?: string | null }) => {
       const res = await apiRequest("POST", "/api/chat/messages", {
         nickname: getNickname(),
-        message,
+        message: payload.message,
+        ...(payload.photo ? { photo: payload.photo } : {}),
       });
       return res.json();
     },
-    onSuccess: (_data, message) => {
+    onSuccess: (_data, payload) => {
       queryClient.invalidateQueries({ queryKey: ["/api/chat/messages"] });
-      setLastCheckIn(message);
+      setLastCheckIn(payload.message);
       setCustomPlace("");
       setCheckInNote("");
+      setPhotoPreview(null);
+      setPhotoError(null);
     },
   });
+
+  const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (e.target) e.target.value = ""; // reset so same file can be re-selected
+    if (!file) return;
+
+    setPhotoError(null);
+
+    if (!ACCEPTED_TYPES.includes(file.type)) {
+      setPhotoError("Unsupported format. Use JPEG, PNG, or WebP.");
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      setPhotoError("Photo is too large (max 10 MB before compression).");
+      return;
+    }
+
+    try {
+      const dataUrl = await compressImage(file);
+      setPhotoPreview(dataUrl);
+    } catch (err) {
+      setPhotoError(err instanceof Error ? err.message : "Failed to process photo.");
+    }
+  }, []);
+
+  const removePhoto = useCallback(() => {
+    setPhotoPreview(null);
+    setPhotoError(null);
+  }, []);
 
   const withOptionalNote = (message: string) => {
     const note = checkInNote.trim();
@@ -65,7 +142,7 @@ export function CheckInCard({ location, isoDate }: CheckInCardProps) {
 
   const sendCheckIn = (message: string) => {
     const stampedMessage = `${withOptionalNote(message)}\n📍 Trip check-in · ${isoDate}`;
-    checkInMutation.mutate(stampedMessage);
+    checkInMutation.mutate({ message: stampedMessage, photo: photoPreview });
   };
 
   const sendCustom = () => {
@@ -105,7 +182,7 @@ export function CheckInCard({ location, isoDate }: CheckInCardProps) {
         maximumAge: 60000,
       },
     );
-  }; 
+  };
 
   return (
     <Card className="overflow-hidden border-italy-green/20 bg-gradient-to-br from-white via-italy-cream/50 to-italy-green/10 p-4 sm:p-5 shadow-sm">
@@ -156,6 +233,52 @@ export function CheckInCard({ location, isoDate }: CheckInCardProps) {
         <p className="mt-1 text-[11px] text-muted-foreground text-right">
           {checkInNote.length}/180
         </p>
+      </div>
+
+      {/* Photo picker / preview */}
+      <div className="mb-3">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+          className="hidden"
+          onChange={handleFileSelect}
+          data-testid="input-photo-file"
+        />
+        {photoPreview ? (
+          <div className="relative rounded-2xl overflow-hidden border border-italy-green/20 bg-white/80">
+            <img
+              src={photoPreview}
+              alt="Photo preview"
+              className="w-full max-h-48 object-cover"
+            />
+            <button
+              type="button"
+              onClick={removePhoto}
+              className="absolute top-2 right-2 p-1.5 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors cursor-pointer"
+              data-testid="button-remove-photo"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        ) : (
+          <Button
+            variant="outline"
+            className="w-full rounded-2xl bg-white/80 border-italy-green/20 hover:bg-italy-green/10"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={checkInMutation.isPending}
+            data-testid="button-add-photo"
+          >
+            <Camera className="w-4 h-4 mr-2" />
+            Add a photo
+          </Button>
+        )}
+        {photoError && (
+          <div className="mt-2 flex items-start gap-2 rounded-2xl bg-italy-red/10 px-3 py-2 text-sm text-italy-red">
+            <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+            <span>{photoError}</span>
+          </div>
+        )}
       </div>
 
       <Button

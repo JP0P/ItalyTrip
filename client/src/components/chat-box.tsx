@@ -224,9 +224,17 @@ export function ChatBox() {
                         {formatTime(msg.createdAt)}
                       </span>
                     </div>
-                    <p className="text-sm text-foreground/90 break-words">
+                    <p className="text-sm text-foreground/90 break-words whitespace-pre-line">
                       {msg.message}
                     </p>
+                    {msg.photo && (
+                      <img
+                        src={msg.photo}
+                        alt="Check-in photo"
+                        className="mt-1.5 rounded-xl max-w-full max-h-40 object-cover border border-border/40 shadow-sm cursor-pointer hover:opacity-90 transition-opacity"
+                        onClick={() => window.open(msg.photo!, "_blank")}
+                      />
+                    )}
                   </div>
                 </div>
               ))
