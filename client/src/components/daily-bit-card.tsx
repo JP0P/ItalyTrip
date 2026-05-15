@@ -17,45 +17,39 @@ function getExpandedStorageKey(bit: DailyBit) {
   return `side-quests-expanded:${bit.isoDate}`;
 }
 
+function getSavedCompleted(bit: DailyBit) {
+  if (typeof window === "undefined") {
+    return Array.from({ length: bit.sideQuests.length }, () => false);
+  }
+
+  try {
+    const saved = window.localStorage.getItem(getStorageKey(bit));
+    const parsed = saved ? JSON.parse(saved) : null;
+    if (!Array.isArray(parsed)) {
+      return Array.from({ length: bit.sideQuests.length }, () => false);
+    }
+
+    return bit.sideQuests.map((_, index) => Boolean(parsed[index]));
+  } catch {
+    return Array.from({ length: bit.sideQuests.length }, () => false);
+  }
+}
+
+function getSavedExpanded(bit: DailyBit, featured: boolean) {
+  if (!featured || typeof window === "undefined") return !featured;
+
+  try {
+    return window.localStorage.getItem(getExpandedStorageKey(bit)) === "true";
+  } catch {
+    return false;
+  }
+}
+
 export function DailyBitCard({ bit, featured = false }: DailyBitCardProps) {
   const storageKey = useMemo(() => getStorageKey(bit), [bit]);
   const expandedStorageKey = useMemo(() => getExpandedStorageKey(bit), [bit]);
-  const [completed, setCompleted] = useState<boolean[]>(() =>
-    Array.from({ length: bit.sideQuests.length }, () => false),
-  );
-  const [isExpanded, setIsExpanded] = useState(!featured);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    try {
-      const saved = window.localStorage.getItem(storageKey);
-      if (!saved) {
-        setCompleted(Array.from({ length: bit.sideQuests.length }, () => false));
-        return;
-      }
-
-      const parsed = JSON.parse(saved);
-      if (!Array.isArray(parsed)) return;
-
-      setCompleted(
-        bit.sideQuests.map((_, index) => Boolean(parsed[index])),
-      );
-    } catch {
-      setCompleted(Array.from({ length: bit.sideQuests.length }, () => false));
-    }
-  }, [bit.sideQuests, storageKey]);
-
-  useEffect(() => {
-    if (typeof window === "undefined" || !featured) return;
-
-    try {
-      const saved = window.localStorage.getItem(expandedStorageKey);
-      setIsExpanded(saved === "true");
-    } catch {
-      setIsExpanded(false);
-    }
-  }, [expandedStorageKey, featured]);
+  const [completed, setCompleted] = useState<boolean[]>(() => getSavedCompleted(bit));
+  const [isExpanded, setIsExpanded] = useState(() => getSavedExpanded(bit, featured));
 
   useEffect(() => {
     if (typeof window === "undefined") return;

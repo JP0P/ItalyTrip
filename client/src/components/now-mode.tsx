@@ -57,7 +57,7 @@ export function NowMode({ todayEntry, dayNumber, totalDays, locationInfoMap, iti
         totalDays={totalDays}
         bit={bit}
         checkInSlot={<CheckInCard location={todayEntry.location} isoDate={todayEntry.isoDate} />}
-        missionsSlot={bit ? <DailyBitCard bit={bit} featured /> : undefined}
+        missionsSlot={bit ? <DailyBitCard key={bit.isoDate} bit={bit} featured /> : undefined}
       />
       <BaseCampCard location={todayEntry.location} locationInfo={locationInfo} />
       <PhraseCheatsheet />
