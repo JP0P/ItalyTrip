@@ -8,9 +8,16 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  app.get("/api/chat/messages", async (_req, res) => {
+  app.get("/api/chat/messages", async (req, res) => {
     try {
       const messages = await storage.getChatMessages();
+      if (req.query?.view === "chat") {
+        res.json(messages
+          .filter((message) => !message.message.includes("📍 Trip check-in ·"))
+          .map((message) => ({ ...message, photo: null }))
+        );
+        return;
+      }
       res.json(messages);
     } catch (error) {
       console.error("Error fetching messages:", error);

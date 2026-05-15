@@ -166,7 +166,8 @@ export function CheckInCard({ location, isoDate }: CheckInCardProps) {
 
   const { data: messages = [] } = useQuery<ChatMessage[]>({
     queryKey: ["/api/chat/messages"],
-    refetchInterval: 3000,
+    enabled: drawerOpen && activeTab === "gallery",
+    refetchInterval: drawerOpen && activeTab === "gallery" ? 3000 : false,
   });
 
   const checkInMessages = messages.filter(isTripCheckIn).reverse();

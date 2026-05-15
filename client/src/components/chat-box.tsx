@@ -69,7 +69,7 @@ export function ChatBox() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { data: messages = [], isLoading } = useQuery<ChatMessage[]>({
-    queryKey: ["/api/chat/messages"],
+    queryKey: ["/api/chat/messages?view=chat"],
     refetchInterval: 3000,
   });
 
@@ -82,6 +82,7 @@ export function ChatBox() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/chat/messages"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/chat/messages?view=chat"] });
       setMessageInput("");
     },
   });
