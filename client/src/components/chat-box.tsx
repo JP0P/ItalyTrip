@@ -55,6 +55,16 @@ function isTripCheckIn(message: ChatMessage) {
   return message.message.includes("📍 Trip check-in ·");
 }
 
+const CHAT_LAST_SEEN_KEY = "gelato-chat-last-seen-message-id";
+
+function getMessageId(message: ChatMessage) {
+  return Number(message.id) || 0;
+}
+
+function getLatestMessageId(messages: ChatMessage[]) {
+  return messages.reduce((latest, message) => Math.max(latest, getMessageId(message)), 0);
+}
+
 export function ChatBox() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [nickname, setNickname] = useState<string | null>(() => {
@@ -66,6 +76,10 @@ export function ChatBox() {
   const [nicknameInput, setNicknameInput] = useState("");
   const [messageInput, setMessageInput] = useState("");
   const [showNicknamePrompt, setShowNicknamePrompt] = useState(false);
+  const [lastSeenMessageId, setLastSeenMessageId] = useState(() => {
+    if (typeof window === "undefined") return 0;
+    return Number(localStorage.getItem(CHAT_LAST_SEEN_KEY) || 0);
+  });
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { data: messages = [], isLoading } = useQuery<ChatMessage[]>({
@@ -74,6 +88,8 @@ export function ChatBox() {
   });
 
   const chatMessages = messages.filter((msg) => !isTripCheckIn(msg));
+  const latestMessageId = getLatestMessageId(chatMessages);
+  const unreadMessages = chatMessages.filter((msg) => getMessageId(msg) > lastSeenMessageId);
 
   const sendMessageMutation = useMutation({
     mutationFn: async (data: { nickname: string; message: string }) => {
@@ -92,6 +108,15 @@ export function ChatBox() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, isExpanded]);
+
+  useEffect(() => {
+    if (!isExpanded || latestMessageId === 0) return;
+
+    setLastSeenMessageId(latestMessageId);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(CHAT_LAST_SEEN_KEY, String(latestMessageId));
+    }
+  }, [isExpanded, latestMessageId]);
 
   const handleSendMessage = () => {
     if (!messageInput.trim()) return;
@@ -158,15 +183,13 @@ export function ChatBox() {
           />
         </button>
         {(() => {
-          const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
-          const recentMessages = chatMessages.filter(msg => new Date(msg.createdAt).getTime() > oneDayAgo);
-          if (recentMessages.length === 0) return null;
+          if (unreadMessages.length === 0) return null;
           return (
             <span
               className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-italy-red text-white text-xs flex items-center justify-center font-medium"
               data-testid="badge-message-count"
             >
-              {recentMessages.length > 9 ? "9+" : recentMessages.length}
+              {unreadMessages.length > 9 ? "9+" : unreadMessages.length}
             </span>
           );
         })()}
