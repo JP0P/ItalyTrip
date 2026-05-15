@@ -174,8 +174,8 @@ export function ChatBox() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50" data-testid="chat-box-expanded">
-      <Card className="w-80 sm:w-96 flex flex-col shadow-xl border-border">
+    <div className="fixed inset-x-4 bottom-4 z-50 sm:left-auto sm:right-4" data-testid="chat-box-expanded">
+      <Card className="w-full sm:w-96 max-h-[calc(100vh-2rem)] flex flex-col shadow-xl border-border">
         <div className="flex items-center justify-between gap-2 p-4 border-b border-border bg-italy-green/5">
           <div className="flex items-center gap-2">
             <img src={gelatoIcon} alt="" className="h-6 w-6 object-contain" />
@@ -191,8 +191,8 @@ export function ChatBox() {
           </Button>
         </div>
 
-        <ScrollArea className="h-80">
-          <div ref={scrollRef} className="p-4 space-y-4 h-80 overflow-y-auto">
+        <ScrollArea className="h-80 min-h-0">
+          <div ref={scrollRef} className="p-4 space-y-4 h-80 min-h-0 overflow-y-auto">
             {isLoading ? (
               <div className="flex items-center justify-center h-full">
                 <p className="text-muted-foreground text-sm">Loading messages...</p>
@@ -222,15 +222,15 @@ export function ChatBox() {
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-baseline gap-2">
-                      <span className="font-medium text-sm text-foreground">
+                    <div className="flex items-baseline gap-2 min-w-0">
+                      <span className="font-medium text-sm text-foreground truncate">
                         {msg.nickname}
                       </span>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-muted-foreground flex-shrink-0">
                         {formatTime(msg.createdAt)}
                       </span>
                     </div>
-                    <p className="text-sm text-foreground/90 break-words whitespace-pre-line">
+                    <p className="text-sm text-foreground/90 break-words whitespace-pre-line [overflow-wrap:anywhere]">
                       {msg.message}
                     </p>
                     {msg.photo && (
