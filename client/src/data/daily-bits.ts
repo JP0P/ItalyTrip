@@ -143,15 +143,15 @@ export const dailyBits: Record<string, DailyBit> = {
     heroTitle: "Amalfi, First Look",
     heroSubtitle: "Roma Termini to cliffs, lemons, and full coastal drama.",
     heroImageUrl: "https://commons.wikimedia.org/wiki/Special:FilePath/Amalfi_Coast_(Italy).jpg",
-    urgencyLine: "Rome → Naples → Amalfi Coast. Keep logistics clean, then let the coastline do the flexing.",
+    urgencyLine: "Rome → Naples → Amalfi Coast. 12:30pm private transfer from Naples Central, then Via Papa Leone X in Amalfi.",
     suggestionSections: [
       {
         label: "Travel anchors",
         emoji: "🚆",
         ideas: [
           "Frecciarossa 8335: Roma Termini 10:20 → Napoli Centrale 11:33",
-          "Treat the Naples-to-coast transfer as the main boss fight; snacks and patience help",
-          "Once bags are down, do the first-look wander before anyone over-plans the night",
+          "Private transfer pickup: Naples Central Station at 12:30pm",
+          "Drop-off is Via Papa Leone X, Amalfi; once bags are down, do the first-look wander",
         ],
       },
       {
@@ -160,7 +160,7 @@ export const dailyBits: Record<string, DailyBit> = {
         ideas: [
           "Find the closest ridiculous sea view and let everyone recalibrate from Rome speed",
           "Keep dinner low-friction: seafood, pasta, lemon anything, view if possible",
-          "If Ravello/Amalfi logistics are weird, pick vibes over perfection and stay flexible",
+          "Home base is Amalfi, not a vague coast situation; pick vibes over perfection and stay flexible",
         ],
       },
       {
@@ -208,8 +208,8 @@ export const dailyBits: Record<string, DailyBit> = {
     ],
     sideQuests: [
       "🚂 Make the train. Frecciarossa 8335, Roma Termini 10:20.",
+      "🚐 Private transfer pickup at Naples Central Station, 12:30pm.",
       "🌊 First look at the coast — mandatory awe moment",
-      "🍋 Acquire a lemon-based something within one hour of arrival",
     ],
     chaosBonus: "If everyone survives the transfer and still gets a sea-view drink, Amalfi has officially begun.",
   },
@@ -450,11 +450,11 @@ export const dailyBits: Record<string, DailyBit> = {
   },
   "2026-05-19": {
     isoDate: "2026-05-19",
-    urgencyLine: "Florence. Renaissance art, beautiful people, and excellent leather goods.",
+    urgencyLine: "Florence arrival. Napoli 12:10 → Firenze SMN 15:11, then Costa dei Magnoli, 19.",
     sideQuests: [
       "🚆 Train departs Napoli 12:10 — do NOT miss it",
+      "🏡 Check into Costa dei Magnoli, 19",
       "🍷 First Chianti of the Tuscany leg",
-      "🌇 Evening walk through the historic center",
     ],
   },
   "2026-05-20": {
@@ -468,10 +468,10 @@ export const dailyBits: Record<string, DailyBit> = {
   },
   "2026-05-21": {
     isoDate: "2026-05-21",
-    urgencyLine: "Val d'Orcia. Rolling hills. Wine. Sheep. This is the Italy of your dreams.",
+    urgencyLine: "Rental car day. Pickup is Via Maso Finiguerra 31 R near Firenze SMN, then onward to Castelmuzio.",
     sideQuests: [
-      "🚗 Rental car pickup — everyone agrees on music before leaving",
-      "🏡 Find the agriturismo and immediately sit outside with wine",
+      "🚗 Rental car pickup at Via Maso Finiguerra 31 R",
+      "🏡 Get to Castelmuzio and immediately sit outside with wine",
       "🌄 Sunset over the hills is literally a screensaver",
     ],
   },
@@ -495,10 +495,11 @@ export const dailyBits: Record<string, DailyBit> = {
   },
   "2026-05-24": {
     isoDate: "2026-05-24",
-    urgencyLine: "Cinque Terre arrival. Five villages. All colorful. All stunning.",
+    urgencyLine: "Cinque Terre arrival. Drive Tuscany → Monterosso, parking confirmed, then Via Roma 33.",
     sideQuests: [
-      "✈️ Pisa Airport car return — no drama, just logistics",
-      "🚂 Train to Vernazza or Monterosso",
+      "🚗 Drive to Monterosso al Mare — about 2.5–3 hours",
+      "🅿️ Parking is confirmed at the accommodation",
+      "🏡 Check into Via Roma 33",
       "🌊 First look at the five villages: breathe it in",
     ],
   },
@@ -513,9 +514,12 @@ export const dailyBits: Record<string, DailyBit> = {
   },
   "2026-05-26": {
     isoDate: "2026-05-26",
-    urgencyLine: "Venice. Final destination. 8:20pm gondola is booked. Do not be late.",
+    urgencyLine: "Venice. Return the car in La Spezia, train via Florence, then 8:20pm gondola. Do not freestyle this one.",
     sideQuests: [
-      "⛵ Get lost in the canals on purpose",
+      "🚗 Return the rental car in La Spezia",
+      "🚆 La Spezia Centrale 12:35 → Firenze SMN 15:08, Regional 18413, PNR JU7ZC5",
+      "🚆 Firenze SMN → Venezia Santa Lucia second train — details TBD",
+      "🏨 Check into Canal Grande",
       "🥂 Cicchetti crawl: eat everything you see",
       "🚣 8:20pm gondola ride — non-negotiable, already paid for",
     ],

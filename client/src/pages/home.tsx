@@ -61,25 +61,29 @@ const locationInfoMap: Record<string, LocationInfo> = {
     vibe: "Dramatic cliffs, la dolce vita glamour",
     knownFor: "Capri, cooking classes, coastal ferry-hopping",
     mustDo: "Day trip to Capri by ferry",
-    airbnbUrl: "https://www.airbnb.com/rooms/19043527"
+    airbnbUrl: "https://www.airbnb.com/rooms/19043527",
+    stayLabel: "Home in Amalfi - Via Papa Leone X"
   },
   "Florence": {
     vibe: "Renaissance elegance, art at every turn",
     knownFor: "Duomo, Uffizi or Accademia, Oltrarno charm",
     mustDo: "Sunset at Piazzale Michelangelo",
-    airbnbUrl: "https://www.airbnb.com/rooms/1608846507435251574"
+    airbnbUrl: "https://www.airbnb.com/rooms/1608846507435251574",
+    stayLabel: "Costa dei Magnoli, 19"
   },
   "Tuscany": {
     vibe: "Rolling hills, unhurried village life",
     knownFor: "Val d'Orcia, Vespa rides, hot air balloons",
     mustDo: "Vespa day through Pienza & Montepulciano",
-    airbnbUrl: "https://www.airbnb.com/rooms/1383309944460623346"
+    airbnbUrl: "https://www.airbnb.com/rooms/1383309944460623346",
+    stayLabel: "Castelmuzio"
   },
   "Cinque Terre": {
     vibe: "Colorful fishing villages, coastal romance",
     knownFor: "Five UNESCO villages, hiking trails, sunsets",
     mustDo: "Watch sunset from Manarola with local wine",
-    airbnbUrl: "https://www.airbnb.com/rooms/6278924"
+    airbnbUrl: "https://www.airbnb.com/rooms/6278924",
+    stayLabel: "Monterosso - Via Roma 33"
   },
   "Venice": {
     vibe: "Floating fairytale, romantic labyrinth",
@@ -536,8 +540,9 @@ const itinerary: ItineraryDay[] = [
     title: "Coastal Paradise - Arrival",
     activities: [
       "Train: Roma Termini 10:20 → Napoli Centrale 11:33 (Frecciarossa 8335)",
-      "Transfer to Amalfi town or Ravello",
-      "Settle in and explore the area",
+      "Private transfer pickup: Naples Central Station at 12:30pm",
+      "Drop-off: Via Papa Leone X, Amalfi",
+      "Settle into the home in Amalfi",
       "Evening along the coast"
     ],
     icon: Mountain
@@ -589,7 +594,7 @@ const itinerary: ItineraryDay[] = [
     title: "Renaissance Heart - Arrival",
     activities: [
       "Train: Napoli Centrale 12:10 → Firenze SMN 15:11 (Frecciarossa 9422)",
-      "Check into hotel near Duomo, Santa Croce, or Oltrarno",
+      "Check into Costa dei Magnoli, 19",
       "Evening walk and dinner in the historic center"
     ],
     icon: Church
@@ -615,8 +620,8 @@ const itinerary: ItineraryDay[] = [
     location: "Tuscany",
     title: "Val d'Orcia - Arrival",
     activities: [
-      "Pick up rental car and drive to Val d'Orcia",
-      "Check into agriturismo near Pienza or Montepulciano",
+      "Pick up rental car: Via Maso Finiguerra 31 R, near Firenze SMN",
+      "Drive to Castelmuzio",
       "Explore the area and settle in",
       "Dinner with local wine pairings"
     ],
@@ -657,9 +662,9 @@ const itinerary: ItineraryDay[] = [
     location: "Cinque Terre",
     title: "Villages of the Coast - Arrival",
     activities: [
-      "Drive Val d'Orcia → Pisa Airport (2.5–3 hrs), return rental car",
-      "Train: Pisa Airport → La Spezia Centrale (~1 hr), then local train to village",
-      "Check into Vernazza or Monterosso al Mare",
+      "Drive Tuscany → Monterosso al Mare (~2.5–3 hrs)",
+      "Parking confirmed at accommodation",
+      "Check into Monterosso al Mare, Via Roma 33",
       "Evening exploring the village"
     ],
     icon: Ship
@@ -685,8 +690,10 @@ const itinerary: ItineraryDay[] = [
     location: "Venice",
     title: "City of Canals - Finale",
     activities: [
-      "Travel to Venice",
-      "Check into hotel in Dorsoduro or Cannaregio",
+      "Return rental car in La Spezia",
+      "Train 1: La Spezia Centrale 12:35 → Firenze SMN 15:08 (Regional 18413, PNR JU7ZC5)",
+      "Train 2: Firenze SMN → Venezia Santa Lucia (details TBD)",
+      "Check into Canal Grande",
       "Cicchetti crawl and evening canal wandering",
       "8:20pm gondola ride (booked)",
       "Final Italian dinner with Prosecco"
